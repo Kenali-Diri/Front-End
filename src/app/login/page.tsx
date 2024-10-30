@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Body } from "@/components/core/Body";
+import { Section } from "@/components/core/Section";
 import { TextField } from "@/components/core/TextField";
 import { Footer } from "@/components/Footer";
 import { Envelope, Lock } from "@/components/icons";
@@ -11,7 +11,7 @@ export default function Login() {
     return (
         <>
             <Navbar />
-            <Body className="relative flex items-center">
+            <Section className="relative flex items-center bg-soft-cream py-8 lg:py-16">
                 <div className="hidden lg:grid lg:col-span-5">
                     <Image src="/assets/hello.png" width={512} height={512} className="absolute 2xl:relative size-[100px] lg:size-[440px] 2xl:size-[512px] left-0 top-1/2 -translate-y-1/2" alt="Hello Image"/>
                 </div>
@@ -33,7 +33,7 @@ export default function Login() {
                         </p>
                     </div>
                 </form>
-            </Body>
+            </Section>
             <Footer />
         </>
     )
