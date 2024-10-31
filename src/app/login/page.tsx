@@ -23,7 +23,7 @@ export default function Login() {
                     <div className="flex flex-col gap-y-4 lg:gap-y-6">
                         <TextField name="email" type="email" icon={<Envelope className="fill-dark-slate" />} placeholder="mail@gmail.com" />
                         <TextField name="password" type="password" icon={<Lock className="fill-dark-slate" />} placeholder="kata sandi" />
-                        <Link href="/forgot-password" className="self-end hover:underline text-dark-slate text-xs lg:text-base font-bold">Lupa kata sandi?</Link>
+                        <Link href="/lupa-sandi" className="self-end hover:underline text-dark-slate text-xs lg:text-base font-bold">Lupa kata sandi?</Link>
                     </div>
                     <div className="flex flex-col items-center lg:items-end gap-y-6">
                         <button className="py-3 lg:py-4 px-6 lg:px-12 bg-blue hover:bg-blue-hovered text-white text-xs lg:text-sm font-semibold lg:font-bold rounded-md w-full lg:w-fit" type="submit">Masuk</button>
