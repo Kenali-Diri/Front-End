@@ -7,10 +7,22 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      padding: '1.5rem'
+    },
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'blue': '#435BC0',
+        'blue-hovered': '#3C51AB',
+        'pink': '#F6666F',
+        'pink-hovered': '#E85F67',
+        'barbie-pink': '#FF9FCD',
+        'soft-cream': '#FFF1E3',
+        'dark-slate': '#464555',
+        'medium-slate': '#AAA9BC',
+        'light-slate': '#CECDE1'
       },
     },
   },
