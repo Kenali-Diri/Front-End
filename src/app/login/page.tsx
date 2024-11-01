@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -6,8 +8,49 @@ import { TextField } from '@/components/core/TextField';
 import { Footer } from '@/components/Footer';
 import { Envelope, Lock } from '@/components/icons';
 import { Navbar } from '@/components/Navbar';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Login() {
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // Debugging logs to ensure email and password are set
+        console.log('Email:', email);
+        console.log('Password:', password);
+
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            console.log(response.status);
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                    errorData.message ||
+                        'Login failed. Please check your credentials.',
+                );
+            }
+
+            // Redirect to dashboard after successful login
+            router.push('/');
+        } catch (err: any) {
+            setError(err.message);
+            console.log(err.message);
+        }
+    };
+
     return (
         <>
             <Navbar />
@@ -21,7 +64,10 @@ export default function Login() {
                         alt="Hello Image"
                     />
                 </div>
-                <form className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit">
+                <form
+                    onSubmit={handleSubmit}
+                    className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit"
+                >
                     <div className="flex flex-col gap-y-1 lg:gap-y-2">
                         <p className="text-lg lg:text-xl font-bold text-blue">
                             Kenali.Diri
@@ -36,20 +82,25 @@ export default function Login() {
                             type="email"
                             icon={<Envelope className="fill-dark-slate" />}
                             placeholder="mail@gmail.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
                             name="password"
                             type="password"
                             icon={<Lock className="fill-dark-slate" />}
                             placeholder="kata sandi"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <Link
-                            href="/lupa-sandi"
+                            href="/forgot-password"
                             className="self-end hover:underline text-dark-slate text-xs lg:text-base font-bold"
                         >
                             Lupa kata sandi?
                         </Link>
                     </div>
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
                     <div className="flex flex-col items-center lg:items-end gap-y-6">
                         <button
                             className="py-3 lg:py-4 px-6 lg:px-12 bg-blue hover:bg-blue-hovered text-white text-xs lg:text-sm font-semibold lg:font-bold rounded-md w-full lg:w-fit"
