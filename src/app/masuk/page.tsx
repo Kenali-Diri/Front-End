@@ -39,7 +39,7 @@ export default function Login() {
                 const errorData = await response.json();
                 throw new Error(
                     errorData.message ||
-                        'Login failed. Please check your credentials.',
+                    'Login failed. Please check your credentials.',
                 );
             }
 
@@ -94,7 +94,7 @@ export default function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <Link
-                            href="/forgot-password"
+                            href="/lupa-sandi"
                             className="self-end hover:underline text-dark-slate text-xs lg:text-base font-bold"
                         >
                             Lupa kata sandi?
@@ -111,7 +111,7 @@ export default function Login() {
                         <p className="text-xs lg:text-sm">
                             <span>Belum punya akun? </span>
                             <Link
-                                href="/register"
+                                href="/daftar"
                                 className="text-blue font-bold hover:underline"
                             >
                                 Daftar Sekarang
