@@ -51,7 +51,7 @@ export default function Login() {
                         <p className="text-xs lg:text-sm">
                             <span>Sudah punya akun? </span>
                             <Link
-                                href="/login"
+                                href="/masuk"
                                 className="text-blue font-bold hover:underline"
                             >
                                 Masuk
