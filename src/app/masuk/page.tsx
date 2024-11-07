@@ -10,6 +10,7 @@ import { Envelope, Lock } from '@/components/icons';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Dialog from '../components/dialog/page';
 
 export default function Login() {
     const router = useRouter();
@@ -39,7 +40,7 @@ export default function Login() {
                 const errorData = await response.json();
                 throw new Error(
                     errorData.message ||
-                    'Login failed. Please check your credentials.',
+                        'Login failed. Please check your credentials.',
                 );
             }
 
@@ -121,6 +122,8 @@ export default function Login() {
                 </form>
             </Section>
             <Footer />
+
+            <Dialog type='badge' open={true} handleClose={() => console.log('test')} score={50}/>
         </>
     );
 }
