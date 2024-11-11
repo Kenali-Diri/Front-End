@@ -20,7 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${montserrat.className} flex flex-col min-h-dvh antialiased scroll-smooth`}
+                className={`${montserrat.className} flex flex-col min-h-dvh antialiased scroll-smooth text-dark-slate`}
             >
                 {children}
             </body>

@@ -11,10 +11,10 @@ export function Navbar() {
 
                     {/* Desktop Navbar Items */}
                     <div className="hidden lg:flex flex-row items-center justify-center gap-6">
-                        <Link href="/" className="text-dark-slate hover:font-semibold">Beranda</Link>
-                        <Link href="/eksplor" className="text-dark-slate hover:font-semibold">Eksplor</Link>
-                        <Link href="/tentang-kami" className="text-dark-slate hover:font-semibold">Tentang Kami</Link>
-                        <Link href="/leaderboard" className="text-dark-slate hover:font-semibold">Leaderboard</Link>
+                        <Link href="/" className="text-dark-slate hover:font-semibold hover:text-blue">Beranda</Link>
+                        <Link href="/eksplor" className="text-dark-slate hover:font-semibold hover:text-blue">Eksplor</Link>
+                        <Link href="/tentang-kami" className="text-dark-slate hover:font-semibold hover:text-blue">Tentang Kami</Link>
+                        <Link href="/leaderboard" className="text-dark-slate hover:font-semibold hover:text-blue">Leaderboard</Link>
                         <Link href="/masuk" className="bg-pink hover:bg-pink-hovered text-white py-2 px-4 text-sm font-semibold rounded-md">Masuk</Link>
                     </div>
 
@@ -28,10 +28,10 @@ export function Navbar() {
 
                     {/* Mobile Navbar Items */}
                     <div className="fixed hidden w-full h-dvh peer-checked/menu:flex flex-col lg:flex-row items-center justify-center gap-6 top-0 left-0 bg-white/85 backdrop-blur-sm z-10">
-                        <Link href="/" className="text-dark-slate hover:font-semibold">Beranda</Link>
-                        <Link href="/eksplor" className="text-dark-slate hover:font-semibold">Eksplor</Link>
-                        <Link href="/tentang-kami" className="text-dark-slate hover:font-semibold">Tentang Kami</Link>
-                        <Link href="/leaderboard" className="text-dark-slate hover:font-semibold">Leaderboard</Link>
+                        <Link href="/" className="text-dark-slate hover:font-semibold hover:text-blue">Beranda</Link>
+                        <Link href="/eksplor" className="text-dark-slate hover:font-semibold hover:text-blue">Eksplor</Link>
+                        <Link href="/tentang-kami" className="text-dark-slate hover:font-semibold hover:text-blue">Tentang Kami</Link>
+                        <Link href="/leaderboard" className="text-dark-slate hover:font-semibold hover:text-blue">Leaderboard</Link>
                         <Link href="/masuk" className="bg-pink hover:bg-pink-hovered text-white py-2 px-4 text-sm font-semibold rounded-md">Masuk</Link>
                     </div>
                 </div>
