@@ -10,7 +10,7 @@ import { Envelope, Lock } from '@/components/icons';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Dialog from '../components/dialog/page';
+import Dialog from '@/components/Dialog';
 
 export default function Login() {
     const router = useRouter();

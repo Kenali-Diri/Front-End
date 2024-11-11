@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface dialogProps {
+interface DialogProps {
     type: string;
     open: boolean;
     handleClose: () => void;
@@ -12,7 +12,7 @@ interface dialogProps {
     imgName?: string;
 }
 
-const Dialog = ({ type, open, handleClose, score, src, imgName }: dialogProps) => {
+const Dialog = ({ type, open, handleClose, score, src, imgName }: DialogProps) => {
     if (type === 'selesai_level' && open) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
