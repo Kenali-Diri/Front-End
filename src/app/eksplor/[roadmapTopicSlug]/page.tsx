@@ -1,17 +1,18 @@
 'use client';
 
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+
 import { Level } from "@/components/cards/Level";
 import { Section } from "@/components/core/Section";
 import { Footer } from "@/components/Footer";
-import { ChevronLeft, Game, Medal } from "@/components/icons";
+import { ChevronLeft } from "@/components/icons";
 import { Navbar } from "@/components/Navbar";
-import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
 
 interface ExploreDetailProps {
     params: {
-        slug: string
+        roadmapTopicSlug: string
     }
 }
 
@@ -43,7 +44,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                         <ChevronLeft className="fill-white" />
                         <span>Kembali</span>
                     </Link>
-                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10">{params.slug}</h1>
+                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10">{params.roadmapTopicSlug}</h1>
                     <Image width={4800} height={1600} src='/assets/tubuhku-banner.png' alt="Banner" className="w-full mt-6" />
                 </div>
             </Section>
@@ -52,7 +53,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 <div className="col-span-12 flex flex-col items-center pb-20">
                     {levels.map((level, index) => (
                         <span className="w-full flex flex-col items-center" key={index}>
-                            <Level level={level} roadmapTopicSlug={params.slug} variant="blue" complete={true}></Level>
+                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant="blue" complete={true} />
 
                             {index < levels.length - 1 && (
                                 <div className="border-dashed border-l-2 border-dark-slate h-12"></div>
