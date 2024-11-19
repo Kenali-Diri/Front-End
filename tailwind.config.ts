@@ -24,6 +24,47 @@ const config: Config = {
         'medium-slate': '#AAA9BC',
         'light-slate': '#CECDE1'
       },
+      keyframes: {
+        'shake': {
+          '0%, 100%': {
+            transform: 'translateX(-2px)'
+          },
+          '50%': {
+            transform: 'translateX(2px)'
+          },
+        },
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '1'
+          }
+        },
+        'fade-out': {
+          '0%': {
+            opacity: '1',
+          },
+          '100%': {
+            opacity: '0'
+          }
+        },
+        'loading-progress-bar': {
+          '0%': {
+            width: '0%'
+          },
+          '100%': {
+            width: '100%'
+          }
+        }
+      },
+      animation: {
+        'shake': 'shake 0.3s ease-in-out 3',
+        'fade-in': 'fade-in 0.3s ease-in-out',
+        'fade-out': 'fade-out 0.3s ease-in-out',
+        'fade-in-out': 'fade-in 0.3s ease-in-out 0s, fade-out 0.2s ease-in-out 2.3s forwards',
+        'loading-progress-bar': 'loading-progress-bar 2.5s linear'
+      }
     },
   },
   plugins: [],

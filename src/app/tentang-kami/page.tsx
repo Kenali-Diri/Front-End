@@ -13,17 +13,17 @@ export default function TentangKami() {
                 {/* Bagian Header paling atas */}
                 <div className="col-span-12 h-[300px] sm:h-[376px] flex flex-col items-center justify-center bg-white rounded-md gap-[16px] md:gap-[32px]">
                     <div className="w-[200px] h-[40px] sm:w-[296px] sm:h-[58px] bg-soft-cream flex justify-center items-center rounded-3xl">
-                        <p className="text-pink font-bold text-xl sm:text-3xl">
+                        <p className="text-pink font-bold text-base sm:text-xl">
                             Tentang Kami
                         </p>
                     </div>
                     <div>
-                        <h2 className="text-5xl sm:text-8xl font-bold bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent">
+                        <h2 className="text-4xl sm:text-6xl font-extrabold bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent">
                             Kenali Diri
                         </h2>
                     </div>
                     <div className="px-4 lg:w-[794px]">
-                        <p className="sm:text-lg lg:text-2xl text-center">
+                        <p className="sm:text-lg lg:text-lg text-center">
                             Kenali diri adalah sebuah website edukasi yang akan
                             memberikan pembelajaran terakit edukasi seksual
                             dengan cara yang menyenangkan dan aman.
@@ -36,7 +36,7 @@ export default function TentangKami() {
                 {/* Isi */}
                 <div className="col-span-12 h-auto flex flex-col items-center justify-center gap-10">
                     <div>
-                        <h2 className="text-4xl sm:text-6xl text-blue font-bold text-center">
+                        <h2 className="text-4xl sm:text-5xl text-blue font-bold text-center">
                             Awal Dari Kenali.Diri
                         </h2>
                     </div>
@@ -53,10 +53,10 @@ export default function TentangKami() {
                         </div>
                         {/* bagian kanan */}
                         <div className="text-center sm:text-left flex items-center justify-center ">
-                            <p className="text-lg lg:text-2xl">
+                            <p className="text-base lg:text-xl">
                                 Berawal dari keresahan kami sebagai anak muda
                                 yang sadar akan{' '}
-                                <span className="text-pink">
+                                <span className="font-semibold text-pink">
                                     {' '}
                                     rendahnya edukasi seksual
                                 </span>{' '}
@@ -65,7 +65,7 @@ export default function TentangKami() {
                                 <br className="hidden lg:block" />
                                 Yang pada akhirnya menyebabkan maraknya
                                 kasus-kasus yang terjadi di Indonesia, seperti{' '}
-                                <span className="hidden text-pink">
+                                <span className="hidden font-semibold text-pink">
                                     pelecehan seksual, pernikahan muda, dan
                                     kasus lainnya
                                 </span>
@@ -74,7 +74,7 @@ export default function TentangKami() {
                                 <br className="hidden lg:block" />
                                 Oleh sebab itu, kami menghadirkan sebuah
                                 platform yang dapat memberikan{' '}
-                                <span className="text-pink">
+                                <span className="font-semibold text-pink">
                                     {' '}
                                     pembelajaran edukasi seksual yang aman dan
                                     tentunya menyenangkan
@@ -151,7 +151,7 @@ export default function TentangKami() {
 
             <Section className="items-center bg-soft-cream pb-20 overflow-hidden">
                 {/* Tim Kami */}
-                <div className="flex item-center col-span-12 flex flex-col">
+                <div className="flex item-center col-span-12 flex-col">
                     <div className="flex justify-center">
                         <h2 className="text-6xl text-blue">
                             <span className="font-bold">Tim</span> Kami

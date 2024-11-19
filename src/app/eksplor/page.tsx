@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 import { Section } from "@/components/core/Section";
 import { Footer } from "@/components/Footer";
@@ -8,18 +10,17 @@ import { ChevronLeft, Game, Medal } from "@/components/icons";
 import { Diamond } from "@/components/icons/Diamond";
 import { Navbar } from "@/components/Navbar";
 
-import Image from "next/image";
-import Link from "next/link";
+interface RoadmapTopicItemConfig {
+    [position: number]: {
+        justifyContent: string,
+        connectingLine: {
+            [lineDirection: string]: React.ReactNode
+        }
+    }
+}
 
 export default function Explore() {
-    const roadmapTopicItemConfig: {
-        [position: number]: {
-            justifyContent: string,
-            connectingLine: {
-                [lineDirection: string]: React.ReactNode
-            }
-        }
-    } = {
+    const roadmapTopicItemConfig: RoadmapTopicItemConfig = {
         0: {
             justifyContent: 'justify-start',
             connectingLine: {
@@ -81,7 +82,7 @@ export default function Explore() {
     return (
         <>
             <Navbar />
-            <Section className="bg-soft-cream py-20 overflow-y-hidden">
+            <Section className="bg-soft-cream py-12 md:py-20 overflow-y-hidden">
                 <div className="col-span-12 flex flex-col">
                     <Link href="/" className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline">
                         <ChevronLeft className="fill-dark-slate" />

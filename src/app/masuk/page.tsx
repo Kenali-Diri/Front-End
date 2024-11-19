@@ -122,8 +122,6 @@ export default function Login() {
                 </form>
             </Section>
             <Footer />
-
-            <Dialog type='badge' open={true} handleClose={() => console.log('test')} score={50}/>
         </>
     );
 }
