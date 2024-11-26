@@ -86,9 +86,9 @@ export function ScrambledWord({ question, answer, scrambledWord, image, point, o
                     <h5 className="font-bold text-base text-center md:text-lg md:text-start">{question}</h5>
                     <div className="flex flex-wrap justify-center md:justify-start gap-2">
                         {scrambledWords.map((letter, index) => (
-                            <Droppable key={index} id={`scrambled-letter-box-${index}`} className="size-10 md:size-[3.25rem] flex items-center justify-center border-2 border-dashed border-dark-slate rounded-md">
+                            <Droppable key={index} id={`scrambled-letter-box-${index}`} className="size-10 md:size-11 lg:size-[3.25rem] flex items-center justify-center border-2 border-dashed border-dark-slate rounded-md">
                                 {droppedLetterElementIDs.length > 0 && droppedLetterElementIDs[index] !== '' && (
-                                    <Draggable id={droppedLetterElementIDs[index]} className="flex items-center justify-center size-8 md:size-10 border-2 bg-white hover:bg-light-slate/30 border-dark-slate rounded-md font-bold text-center transition-colors text-sm md:text-base">
+                                    <Draggable id={droppedLetterElementIDs[index]} className="flex items-center justify-center size-8 md:size-9 lg:size-10 border-2 bg-white hover:bg-light-slate/30 border-dark-slate rounded-md font-bold text-center transition-colors text-sm md:text-base">
                                         {scrambledWords.find(letter => letter.elementID === droppedLetterElementIDs[index])?.letter}
                                     </Draggable>
                                 )}
@@ -97,7 +97,7 @@ export function ScrambledWord({ question, answer, scrambledWord, image, point, o
                     </div>
                     <div className="flex justify-center md:justify-start gap-x-2">
                         {scrambledWords.map((letter, index) => !droppedLetterElementIDs.find(droppedLetterElementID => letter.elementID == droppedLetterElementID) && (
-                            <Draggable key={index} id={letter.elementID} className="flex items-center justify-center size-8 md:size-10 border-2 bg-white hover:bg-light-slate/30 border-dark-slate rounded-md font-bold text-center transition-colors text-sm md:text-base">
+                            <Draggable key={index} id={letter.elementID} className="flex items-center justify-center size-8 md:size-9 lg:size-10 border-2 bg-white hover:bg-light-slate/30 border-dark-slate rounded-md font-bold text-center transition-colors text-sm md:text-base">
                                 {letter.letter}
                             </Draggable>
                         ))}

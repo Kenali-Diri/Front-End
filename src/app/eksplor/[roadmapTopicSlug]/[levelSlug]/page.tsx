@@ -157,9 +157,9 @@ export default function LevelDetail({ params }: LevelDetailProps) {
             <Section className="bg-soft-cream py-20">
                 <div className="col-span-12 flex flex-col gap-y-8">
                     {levelMaterials.map(material => (
-                        <div className="flex flex-col gap-y-8 p-8 bg-white rounded-md shadow-md leading-relaxed" key={material.title}>
+                        <div className="flex flex-col gap-y-8 p-6 md:p-8 bg-white rounded-md shadow-md leading-relaxed" key={material.title}>
                             <div className="flex justify-between items-center cursor-pointer" onClick={() => handleOpenMaterial(material.title)}>
-                                <h1 className="font-bold text-xl">{material.title}</h1>
+                                <h1 className="font-bold text-lg md:text-xl">{material.title}</h1>
                                 <ChevronDown />
                             </div>
                             {openedMaterial === material.title && (
@@ -184,7 +184,7 @@ export default function LevelDetail({ params }: LevelDetailProps) {
 
                                             if(materialItem.textType === 'list') {
                                                 materialText = (
-                                                    <ol className="list-decimal ps-5">
+                                                    <ol className="list-decimal ps-5 text-sm md:text-base leading-relaxed">
                                                         {materialItem.text?.split('\n').map(line => (
                                                             <li>{line}</li>
                                                         ))}
@@ -192,21 +192,21 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                                                 );
                                             } else {
                                                 materialText = (
-                                                    <p>{materialItem.text}</p>
+                                                    <p className="text-sm md:text-base leading-relaxed">{materialItem.text}</p>
                                                 );
                                             }
 
                                             if (materialItem.type === 'with-illustration' && materialItem.image !== undefined) {
                                                 return (
-                                                    <div className="flex gap-x-12">
+                                                    <div className="flex flex-col items-center md:items-start md:flex-row gap-y-6 md:gap-x-12 md:gap-y-0">
                                                         {materialText}
-                                                        <Image src={materialItem.image} width={486} height={572} alt="Illustration" className="flex-none w-1/4 h-fit drop-shadow-md" />
+                                                        <Image src={materialItem.image} width={486} height={572} alt="Illustration" className="flex-none w-1/2 md:w-1/4 h-fit drop-shadow-md" />
                                                     </div>
                                                 );
                                             } else if (materialItem.type === 'with-image' && materialItem.image !== undefined) {
                                                 return (
-                                                    <div className="grid grid-cols-2 gap-x-12">
-                                                        <Image src={materialItem.image} width={1064} height={1064} alt="Image" className="col-span-1" />
+                                                    <div className="flex flex-col w-full md:grid md:grid-cols-2 gap-y-6 md:gap-x-12 md:gap-y-0">
+                                                        <Image src={materialItem.image} width={1064} height={1064} alt="Image" className="h-fit md:col-span-1" />
                                                         {materialText}
                                                     </div>
                                                 );
