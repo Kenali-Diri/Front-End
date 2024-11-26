@@ -8,7 +8,7 @@ import { Diamond } from "../icons"
 import { TextField } from "../core/TextField"
 import Dialog from "../Dialog";
 
-interface ShortAnswerProps extends Game {
+export interface ShortAnswerProps extends Game {
     image: string
 }
 

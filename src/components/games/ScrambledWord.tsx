@@ -10,7 +10,7 @@ import { Droppable } from "../core/Droppable";
 import { Draggable } from "../core/Draggable";
 import Dialog from "../Dialog";
 
-interface ScrambledWordProps extends Game {
+export interface ScrambledWordProps extends Game {
     scrambledWord: string,
     image: string
 }

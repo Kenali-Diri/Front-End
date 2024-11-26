@@ -6,7 +6,7 @@ import { TConductorInstance } from "react-canvas-confetti/dist/types";
 import { Diamond } from "../icons";
 import Dialog from "../Dialog";
 
-interface QuizProps extends Game {
+export interface QuizProps extends Game {
     options: Array<string>
 }
 
