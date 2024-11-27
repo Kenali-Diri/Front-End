@@ -42,12 +42,12 @@ export default function Home() {
                 </div>
             </Section>
             <Section className="text-soft-cream bg-dark-slate">
-                <div className="hidden items-end md:flex md:col-span-6 lg:col-span-5 pt-32">
+                <div className="hidden items-end justify-end md:flex md:col-span-6 lg:col-span-5 pt-32">
                     <Image
                         src="/assets/thinking.png"
                         width={486}
                         height={572}
-                        className="w-full drop-shadow-lg"
+                        className="w-11/12 drop-shadow-lg"
                         alt="Thinking image"
                     />
                 </div>

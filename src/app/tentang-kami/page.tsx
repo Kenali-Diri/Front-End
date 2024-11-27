@@ -13,17 +13,17 @@ export default function TentangKami() {
                 {/* Bagian Header paling atas */}
                 <div className="col-span-12 h-[300px] sm:h-[376px] flex flex-col items-center justify-center bg-white rounded-md gap-[16px] md:gap-[32px]">
                     <div className="w-[200px] h-[40px] sm:w-[296px] sm:h-[58px] bg-soft-cream flex justify-center items-center rounded-3xl">
-                        <p className="text-pink font-bold text-xl sm:text-3xl">
+                        <p className="text-pink font-bold text-base sm:text-xl">
                             Tentang Kami
                         </p>
                     </div>
                     <div>
-                        <h2 className="text-5xl sm:text-8xl font-bold bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent">
+                        <h2 className="text-4xl sm:text-6xl font-extrabold bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent">
                             Kenali Diri
                         </h2>
                     </div>
                     <div className="px-4 lg:w-[794px]">
-                        <p className="sm:text-lg lg:text-2xl text-center">
+                        <p className="sm:text-lg lg:text-lg text-center">
                             Kenali diri adalah sebuah website edukasi yang akan
                             memberikan pembelajaran terakit edukasi seksual
                             dengan cara yang menyenangkan dan aman.
@@ -36,27 +36,28 @@ export default function TentangKami() {
                 {/* Isi */}
                 <div className="col-span-12 h-auto flex flex-col items-center justify-center gap-10">
                     <div>
-                        <h2 className="text-4xl sm:text-6xl text-blue font-bold text-center">
+                        <h2 className="text-4xl sm:text-5xl text-blue font-bold text-center">
                             Awal Dari Kenali.Diri
                         </h2>
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 justify-center items-center h-auto gap-10 lg:gap-4">
                         {/* bagian kiri */}
-                        <div className="hidden sm:block">
+                        <div className="hidden sm:flex sm:items-center sm:justify-center">
                             <Image
                                 src="/assets/balon.png"
                                 width={500}
                                 height={500}
                                 alt="Balon.png"
+                                className='w-10/12 h-fit'
                             />
                         </div>
                         {/* bagian kanan */}
                         <div className="text-center sm:text-left flex items-center justify-center ">
-                            <p className="text-lg lg:text-2xl">
+                            <p className="text-base lg:text-lg">
                                 Berawal dari keresahan kami sebagai anak muda
                                 yang sadar akan{' '}
-                                <span className="text-pink">
+                                <span className="font-semibold text-pink">
                                     {' '}
                                     rendahnya edukasi seksual
                                 </span>{' '}
@@ -65,7 +66,7 @@ export default function TentangKami() {
                                 <br className="hidden lg:block" />
                                 Yang pada akhirnya menyebabkan maraknya
                                 kasus-kasus yang terjadi di Indonesia, seperti{' '}
-                                <span className="hidden text-pink">
+                                <span className="font-semibold text-pink">
                                     pelecehan seksual, pernikahan muda, dan
                                     kasus lainnya
                                 </span>
@@ -74,7 +75,7 @@ export default function TentangKami() {
                                 <br className="hidden lg:block" />
                                 Oleh sebab itu, kami menghadirkan sebuah
                                 platform yang dapat memberikan{' '}
-                                <span className="text-pink">
+                                <span className="font-semibold text-pink">
                                     {' '}
                                     pembelajaran edukasi seksual yang aman dan
                                     tentunya menyenangkan
@@ -96,17 +97,17 @@ export default function TentangKami() {
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 bottom-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full right-4 bottom-4"></div>
                             <div className="text-center">
-                                <p className="text-8xl text-white font-bold">
+                                <p className="text-4xl md:text-7xl text-white font-bold">
                                     Visi
                                 </p>
-                                <p className="text-8xl text-white font-bold">
+                                <p className="text-4xl md:text-7xl text-white font-bold">
                                     Kami
                                 </p>
                             </div>
                         </div>
 
-                        <div className="h-[400px] lg:h-[592px] px-4 bg-white flex justify-center items-center rounded-md">
-                            <p className="text-4xl text-blue font-bold text-center">
+                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex justify-center items-center rounded-md">
+                            <p className="text-lg md:text-2xl text-blue font-bold text-center">
                                 Meningkatkan pemahaman dan kesadaran remaja
                                 mengenai edukasi seksual.
                             </p>
@@ -125,16 +126,16 @@ export default function TentangKami() {
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full right-4 top-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 bottom-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full right-4 bottom-4"></div>
-                            <p className="text-8xl text-white font-bold">
+                            <p className="text-4xl md:text-7xl text-white font-bold">
                                 Misi
                             </p>
-                            <p className="text-8xl text-white font-bold">
+                            <p className="text-4xl md:text-7xl text-white font-bold">
                                 Kami
                             </p>
                         </div>
 
                         {/* Div dengan teks */}
-                        <div className="h-[400px] lg:h-[592px] px-4 bg-white flex flex-col justify-center items-center rounded-md text-2xl lg:text-4xl order-2 md:order-1">
+                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex flex-col justify-center items-center rounded-md text-lg md:text-2xl order-2 md:order-1">
                             <p className="text-pink font-bold text-center">
                                 Menghadirkan platform pembelajaran edukasi
                                 seksual yang sehat, aman, dan seru.
@@ -151,9 +152,9 @@ export default function TentangKami() {
 
             <Section className="items-center bg-soft-cream pb-20 overflow-hidden">
                 {/* Tim Kami */}
-                <div className="flex item-center col-span-12 flex flex-col">
-                    <div className="flex justify-center">
-                        <h2 className="text-6xl text-blue">
+                <div className="flex item-center col-span-12 flex-col">
+                    <div className="flex justify-center mb-4">
+                        <h2 className="text-4xl sm:text-5xl text-blue">
                             <span className="font-bold">Tim</span> Kami
                         </h2>
                     </div>
@@ -165,19 +166,16 @@ export default function TentangKami() {
                                 width={500}
                                 height={350}
                                 alt="Gavriel"
-                                className="transition-transform duration-300 ease-in-out group-hover:scale-110"
-                                style={{ objectFit: 'cover' }}
+                                className="transition-transform duration-300 ease-in-out group-hover:scale-110 object-cover"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="flex justify-center">
-                                <div className="w-[200px] md:w-[150px] lg:w-[300px] absolute bottom-4 bg-white p-1 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md">
-                                    <h3 className="text-md lg:text-lg font-bold text-blue">
-                                        Gavriel Satrio W
-                                    </h3>
-                                    <p className="text-xs lg:text-sm text-dark-slate">
-                                        Developer
-                                    </p>
-                                </div>
+                            <div className="w-10/12 absolute flex flex-col bottom-4 bg-white px-3 py-2 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md left-1/2 -translate-x-1/2">
+                                <h3 className="text-md lg:text-lg line-clamp-1 font-bold text-blue">
+                                    Gavriel Satrio W
+                                </h3>
+                                <p className="text-xs lg:text-sm text-dark-slate">
+                                    Developer
+                                </p>
                             </div>
                         </div>
 
@@ -188,19 +186,16 @@ export default function TentangKami() {
                                 width={500}
                                 height={350}
                                 alt="Kevin"
-                                className="transition-transform duration-300 ease-in-out group-hover:scale-110"
-                                style={{ objectFit: 'cover' }}
+                                className="transition-transform duration-300 ease-in-out group-hover:scale-110 object-cover"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="flex justify-center">
-                                <div className="w-[200px] md:w-[150px] lg:w-[300px] absolute bottom-4 bg-white p-1 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md">
-                                    <h3 className="text-md lg:text-lg font-bold text-blue">
-                                        Kevin Chiputra
-                                    </h3>
-                                    <p className="text-xs lg:text-sm text-dark-slate">
-                                        Developer
-                                    </p>
-                                </div>
+                            <div className="w-10/12 absolute flex flex-col bottom-4 bg-white px-3 py-2 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md left-1/2 -translate-x-1/2">
+                                <h3 className="text-md lg:text-lg line-clamp-1 font-bold text-blue">
+                                    Kevin Chiputra
+                                </h3>
+                                <p className="text-xs lg:text-sm text-dark-slate">
+                                    Developer
+                                </p>
                             </div>
                         </div>
 
@@ -211,19 +206,16 @@ export default function TentangKami() {
                                 width={500}
                                 height={350}
                                 alt="Fatih"
-                                className="transition-transform duration-300 ease-in-out group-hover:scale-110"
-                                style={{ objectFit: 'cover' }}
+                                className="transition-transform duration-300 ease-in-out group-hover:scale-110 object-cover"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                            <div className="flex justify-center">
-                                <div className="w-[200px] md:w-[150px] lg:w-[300px] absolute bottom-4 bg-white p-1 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md">
-                                    <h3 className="text-md lg:text-lg font-bold text-blue">
-                                        Muhammad Fatih
-                                    </h3>
-                                    <p className="text-xs lg:text-sm text-dark-slate">
-                                        Developer
-                                    </p>
-                                </div>
+                            <div className="w-10/12 absolute flex flex-col bottom-4 bg-white px-3 py-2 lg:p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-md left-1/2 -translate-x-1/2">
+                                <h3 className="text-md lg:text-lg line-clamp-1 font-bold text-blue">
+                                    Muhammad Fatih
+                                </h3>
+                                <p className="text-xs lg:text-sm text-dark-slate">
+                                    Developer
+                                </p>
                             </div>
                         </div>
                     </div>

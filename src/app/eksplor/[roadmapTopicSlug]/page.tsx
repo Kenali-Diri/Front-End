@@ -38,7 +38,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
     return (
         <>
             <Navbar />
-            <Section className="bg-dark-slate py-20">
+            <Section className="bg-dark-slate py-12 pb-20 md:py-20">
                 <div className="col-span-12">
                     <Link href="/eksplor" className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-white">
                         <ChevronLeft className="fill-white" />

@@ -29,6 +29,20 @@ input[type='password']:not(:placeholder-shown) {
     letter-spacing: 0.05rem;
 }
 
+*::-webkit-scrollbar {
+    width: 0.6rem;
+    height: 0.6rem;
+}
+
+*::-webkit-scrollbar-track {
+    @apply bg-light-slate;
+}
+
+*::-webkit-scrollbar-thumb {
+    width: 0.5em;
+    @apply bg-dark-slate;
+}
+
 @layer utilities {
     .text-balance {
         text-wrap: balance;

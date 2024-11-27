@@ -1,4 +1,5 @@
 import { Article } from "./Article";
+import { ChevronDown } from "./ChevronDown";
 import { ChevronLeft } from "./ChevronLeft";
 import { Close } from "./Close";
 import { Diamond } from "./Diamond";
@@ -12,6 +13,7 @@ import { Roadmap } from "./Roadmap";
 export {
     Article,
     ChevronLeft,
+    ChevronDown,
     Close,
     Diamond,
     Envelope,
