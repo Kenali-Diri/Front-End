@@ -12,7 +12,14 @@ interface DialogProps {
     imgName?: string;
 }
 
-const Dialog = ({ type, open, handleClose, score, src, imgName }: DialogProps) => {
+const Dialog = ({
+    type,
+    open,
+    handleClose,
+    score,
+    src,
+    imgName,
+}: DialogProps) => {
     if (type === 'selesai_level' && open) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
@@ -58,14 +65,17 @@ const Dialog = ({ type, open, handleClose, score, src, imgName }: DialogProps) =
         );
     } else if (type === 'badge' && open) {
         return (
-            <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
+            <div
+                className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+                onClick={() => handleClose()}
+            >
                 <div className="w-[335px] h-[335px] bg-gradient-to-r from-[#435BC0] to-[#F6666F] flex justify-center items-center rounded-md">
                     <div className="w-[320px] h-[320px] bg-white rounded-md flex flex-col justify-center items-center gap-8">
                         <Image
-                            src="/assets/Badge3L,Leceh,Lari,Lapor!.png"
+                            src={src || ''}
                             width={150}
                             height={100}
-                            alt="badge_img"
+                            alt={imgName || ''}
                         />
 
                         <div>
@@ -77,12 +87,15 @@ const Dialog = ({ type, open, handleClose, score, src, imgName }: DialogProps) =
                 </div>
             </div>
         );
-    } else if(type === 'selesai_game' && open) {
+    } else if (type === 'selesai_game' && open) {
         return (
-            <div className='fixed top-8 p-4 bg-white text-sm md:text-base rounded-md shadow-md shadow-black/20 left-1/2 -translate-x-1/2 animate-fade-in-out w-10/12 sm:w-fit'>
-                Hore! Kamu dapat <span className='font-bold'>{score}</span> poin!
-
-                <div className='absolute left-0 bottom-0 bg-blue w-full h-1 rounded-b-md animate-loading-progress-bar' onAnimationEnd={() => handleClose()}></div>
+            <div className="fixed top-8 p-4 bg-white text-sm md:text-base rounded-md shadow-md shadow-black/20 left-1/2 -translate-x-1/2 animate-fade-in-out w-10/12 sm:w-fit">
+                Hore! Kamu dapat <span className="font-bold">{score}</span>{' '}
+                poin!
+                <div
+                    className="absolute left-0 bottom-0 bg-blue w-full h-1 rounded-b-md animate-loading-progress-bar"
+                    onAnimationEnd={() => handleClose()}
+                ></div>
             </div>
         );
     } else {
