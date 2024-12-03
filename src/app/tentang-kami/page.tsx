@@ -22,7 +22,7 @@ export default function TentangKami() {
                             Kenali Diri
                         </h2>
                     </div>
-                    <div className="px-4 lg:w-[794px]">
+                    <div className="px-6 lg:w-[794px]">
                         <p className="sm:text-lg lg:text-lg text-center">
                             Kenali diri adalah sebuah website edukasi yang akan
                             memberikan pembelajaran terakit edukasi seksual
@@ -36,7 +36,7 @@ export default function TentangKami() {
                 {/* Isi */}
                 <div className="col-span-12 h-auto flex flex-col items-center justify-center gap-10">
                     <div>
-                        <h2 className="text-4xl sm:text-5xl text-blue font-bold text-center">
+                        <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue font-bold text-center">
                             Awal Dari Kenali.Diri
                         </h2>
                     </div>
@@ -154,7 +154,7 @@ export default function TentangKami() {
                 {/* Tim Kami */}
                 <div className="flex item-center col-span-12 flex-col">
                     <div className="flex justify-center mb-4">
-                        <h2 className="text-4xl sm:text-5xl text-blue">
+                        <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue">
                             <span className="font-bold">Tim</span> Kami
                         </h2>
                     </div>
