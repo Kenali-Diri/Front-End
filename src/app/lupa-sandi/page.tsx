@@ -1,27 +1,46 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
 import { TextField } from '@/components/core/TextField';
-import { Footer } from '@/components/Footer';
 import { Envelope, Lock } from '@/components/icons';
-import { Navbar } from '@/components/Navbar';
 
-export default function Login() {
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+export default function ForgotPassword() {
+    const [email, setEmail] = useState<string>('');
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // TODO: Reset password API
+    }
+
+    useEffect(() => {
+        AOS.init();
+    });
+
     return (
         <>
             <Navbar />
             <Section className="relative flex items-center bg-soft-cream py-8 lg:py-16">
                 <div className="hidden lg:grid lg:col-span-5">
                     <Image
-                        src="/assets/thinking.png"
+                        src="/assets/thinking-full.png"
                         width={512}
                         height={512}
-                        className="absolute mt-[50px] 2xl:mt-[160px] z-10"
+                        className="absolute z-10 -bottom-6 drop-shadow-md object-cover object-top h-full lg:h-[440px] w-fit pt-24 lg:pt-0 lg:top-[calc(50%-220px)]"
                         alt="Thinking Image"
+                        data-aos='fade-up'
                     />
                 </div>
-                <form className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit">
+                <form className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit" data-aos='fade' onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-y-1 lg:gap-y-2">
                         <p className="text-lg lg:text-xl font-bold text-blue">
                             Kenali.Diri
@@ -34,6 +53,8 @@ export default function Login() {
                         <TextField
                             name="email"
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             icon={<Envelope className="fill-dark-slate" />}
                             placeholder="mail@gmail.com"
                         />
@@ -47,7 +68,7 @@ export default function Login() {
                         </button>
                         <p className="text-xs lg:text-sm">
                             <Link
-                                href="/login"
+                                href="/masuk"
                                 className="text-blue font-bold hover:underline"
                             >
                                 Kembali Masuk

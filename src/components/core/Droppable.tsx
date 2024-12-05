@@ -5,9 +5,7 @@ interface DroppableProps extends React.HTMLAttributes<HTMLDivElement>{
 };
 
 export function Droppable({ id, className, children }: DroppableProps) {
-    const {isOver, setNodeRef} = useDroppable({
-        id: id
-    });
+    const {isOver, setNodeRef} = useDroppable({ id });
 
     return (
         <div ref={setNodeRef} className={className}>

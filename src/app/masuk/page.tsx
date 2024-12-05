@@ -2,17 +2,23 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
 import { TextField } from '@/components/core/TextField';
-import { Footer } from '@/components/Footer';
 import { Envelope, Lock } from '@/components/icons';
-import { Navbar } from '@/components/Navbar';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import Dialog from '@/components/Dialog';
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 export default function Login() {
+    useEffect(() => {
+        AOS.init();
+    });
+
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -61,13 +67,16 @@ export default function Login() {
                         src="/assets/hello.png"
                         width={512}
                         height={512}
-                        className="absolute 2xl:relative size-[100px] lg:size-[440px] 2xl:size-[512px] left-0 top-1/2 -translate-y-1/2"
+                        className="absolute 2xl:relative size-[100px] lg:size-[440px] 2xl:size-[512px] left-0 top-[calc(50%-220px)]"
                         alt="Hello Image"
+                        data-aos='fade-right'
                     />
                 </div>
                 <form
                     onSubmit={handleSubmit}
                     className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit"
+                    data-aos='fade'
+                    data-aos-delay='200'
                 >
                     <div className="flex flex-col gap-y-1 lg:gap-y-2">
                         <p className="text-lg lg:text-xl font-bold text-blue">
