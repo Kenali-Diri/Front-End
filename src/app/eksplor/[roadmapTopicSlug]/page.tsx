@@ -1,8 +1,11 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import { Level } from "@/components/cards/Level";
 import { Section } from "@/components/core/Section";
@@ -35,17 +38,21 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
         },
     ]);
 
+    useEffect(() => {
+        AOS.init();
+    })
+
     return (
         <>
             <Navbar />
             <Section className="bg-dark-slate py-12 pb-20 md:py-20">
                 <div className="col-span-12">
-                    <Link href="/eksplor" className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-white">
+                    <Link href="/eksplor" className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-white" data-aos='fade'>
                         <ChevronLeft className="fill-white" />
                         <span>Kembali</span>
                     </Link>
-                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10">{params.roadmapTopicSlug}</h1>
-                    <Image width={4800} height={1600} src='/assets/tubuhku-banner.png' alt="Banner" className="w-full mt-6" />
+                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10" data-aos='fade-down'>{params.roadmapTopicSlug}</h1>
+                    <Image width={4800} height={1600} src='/assets/tubuhku-banner.png' alt="Banner" className="w-full mt-6" data-aos='fade-up' />
                 </div>
             </Section>
             <Section className="bg-soft-cream rounded-tr-[50%_100%] rounded-tl-[50%_100%] h-20 md:h-36 -mt-28 md:-mt-32 lg:-mt-36"></Section>
@@ -56,7 +63,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                             <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant="blue" complete={true} />
 
                             {index < levels.length - 1 && (
-                                <div className="border-dashed border-l-2 border-dark-slate h-12"></div>
+                                <div className="border-dashed border-l-2 border-dark-slate h-12" data-aos='fade-up'></div>
                             )}
                         </span>
                     ))}

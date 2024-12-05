@@ -38,7 +38,7 @@ const borderColor: { [key in ColorVariant]: string } = {
 
 export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = false }: LevelProps) {
     return (
-        <Link href={`${roadmapTopicSlug}/${level.slug}`} className="bg-white rounded-2xl sm:rounded-full shadow-md flex flex-col sm:flex-row sm:items-center p-6 sm:p-8 gap-y-3 sm:gap-x-6 w-full sm:w-[28rem]" key={level.name}>
+        <Link href={`${roadmapTopicSlug}/${level.slug}`} className="bg-white rounded-2xl sm:rounded-full shadow-md flex flex-col sm:flex-row sm:items-center p-6 sm:p-8 gap-y-3 sm:gap-x-6 w-full sm:w-[28rem]" key={level.name} data-aos='fade-up'>
             <Game className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
             <div className="grow">
                 <h4 className={`${textColor[variant]} font-bold text-base sm:text-lg`}>{level.name}</h4>

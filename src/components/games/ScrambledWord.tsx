@@ -34,6 +34,7 @@ export function ScrambledWord({ question, answer, scrambledWord, image, point, o
         setConfettiConductor(conductor);
     }
 
+    const [isWrong, setIsWrong] = useState<boolean>(false);
     const [isComplete, setIsComplete] = useState<boolean>(false);
     const [showPointDialog, setShowPointDialog] = useState<boolean>(false);
 
@@ -60,18 +61,24 @@ export function ScrambledWord({ question, answer, scrambledWord, image, point, o
 
         setDroppedLetterElementIDs(updatedDroppedLetterElementIDs);
 
-        const droppedLetterCombined = updatedDroppedLetterElementIDs.reduce((prev, droppedLetterElementID) => prev + scrambledWords.find(letter => letter.elementID === droppedLetterElementID)?.letter, '');
+        const droppedLetterCombined = updatedDroppedLetterElementIDs.reduce((prev, droppedLetterElementID) => prev + (scrambledWords.find(letter => letter.elementID === droppedLetterElementID) === undefined ? '' : scrambledWords.find(letter => letter.elementID === droppedLetterElementID)?.letter), '');
+        if(droppedLetterCombined.length !== answer.length) {
+            return;
+        }
+
         if(droppedLetterCombined === answer) {
             // TODO: Show completion dialog / reward dialog
             confettiConductor?.run({ speed: 3, duration: 1000 });
             setIsComplete(true);
             setShowPointDialog(true);
             onComplete();
+        } else {
+            setIsWrong(true);
         }
     }
 
     return (
-        <div className="flex flex-col md:flex-row items-center gap-y-12 md:gap-x-12 md:gap-y-0">
+        <div className={`flex flex-col md:flex-row items-center gap-y-12 md:gap-x-12 md:gap-y-0 ${isWrong ? 'animate-shake' : ''}`} onAnimationEnd={() => setIsWrong(false)}>
             <div className="flex flex-none relative items-center justify-center bg-dark-slate p-10 w-fit h-fit rounded-lg">
                 <Image src={image} alt="Image" width={720} height={720} className="size-16 md:size-28 aspect-square drop-shadow-md" />
 

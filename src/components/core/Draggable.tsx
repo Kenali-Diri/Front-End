@@ -5,9 +5,7 @@ interface DraggableProps extends React.HTMLAttributes<HTMLButtonElement>{
 }
 
 export function Draggable({ id, className, children }: DraggableProps) {
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({
-        id: id
-    });
+    const {attributes, listeners, setNodeRef, transform} = useDraggable({ id });
 
     const style = transform ? {
         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,

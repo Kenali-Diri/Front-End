@@ -1,17 +1,26 @@
 'use client';
 
-import { Section } from '@/components/core/Section';
-import { Footer } from '@/components/Footer';
-import { Navbar } from '@/components/Navbar';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
-export default function TentangKami() {
+import { Navbar } from '@/components/Navbar';
+import { Footer } from '@/components/Footer';
+import { Section } from '@/components/core/Section';
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+export default function AboutUs() {
+    useEffect(() => {
+        AOS.init();
+    });
+
     return (
         <>
             <Navbar />
             <Section className="items-center bg-soft-cream py-20 overflow-hidden ">
                 {/* Bagian Header paling atas */}
-                <div className="col-span-12 h-[300px] sm:h-[376px] flex flex-col items-center justify-center bg-white rounded-md gap-[16px] md:gap-[32px]">
+                <div className="col-span-12 h-[300px] sm:h-[376px] flex flex-col items-center justify-center bg-white rounded-md gap-[16px] md:gap-[32px]" data-aos='fade-down'>
                     <div className="w-[200px] h-[40px] sm:w-[296px] sm:h-[58px] bg-soft-cream flex justify-center items-center rounded-3xl">
                         <p className="text-pink font-bold text-base sm:text-xl">
                             Tentang Kami
@@ -35,15 +44,13 @@ export default function TentangKami() {
             <Section className="items-center bg-soft-cream py-20 overflow-hidden ">
                 {/* Isi */}
                 <div className="col-span-12 h-auto flex flex-col items-center justify-center gap-10">
-                    <div>
-                        <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue font-bold text-center">
-                            Awal Dari Kenali.Diri
-                        </h2>
-                    </div>
+                    <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue font-bold text-center" data-aos='fade'>
+                        Awal Dari Kenali.Diri
+                    </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 justify-center items-center h-auto gap-10 lg:gap-4">
                         {/* bagian kiri */}
-                        <div className="hidden sm:flex sm:items-center sm:justify-center">
+                        <div className="hidden sm:flex sm:items-center sm:justify-center" data-aos='fade-up'>
                             <Image
                                 src="/assets/balon.png"
                                 width={500}
@@ -53,7 +60,7 @@ export default function TentangKami() {
                             />
                         </div>
                         {/* bagian kanan */}
-                        <div className="text-center sm:text-left flex items-center justify-center ">
+                        <div className="text-center sm:text-left flex items-center justify-center" data-aos='fade-up'>
                             <p className="text-base lg:text-lg">
                                 Berawal dari keresahan kami sebagai anak muda
                                 yang sadar akan{' '}
@@ -91,7 +98,7 @@ export default function TentangKami() {
                 {/* Visi */}
                 <div className="flex col-span-12 gap-6 items-center justify-center">
                     <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-4">
-                        <div className="h-[400px] lg:h-[592px] bg-blue flex justify-center items-center rounded-md relative">
+                        <div className="h-[400px] lg:h-[592px] bg-blue flex justify-center items-center rounded-md relative" data-aos='flip-right'>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 top-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full right-4 top-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 bottom-4"></div>
@@ -106,7 +113,7 @@ export default function TentangKami() {
                             </div>
                         </div>
 
-                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex justify-center items-center rounded-md">
+                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex justify-center items-center rounded-md" data-aos='flip-left' data-aos-delay='200'>
                             <p className="text-lg md:text-2xl text-blue font-bold text-center">
                                 Meningkatkan pemahaman dan kesadaran remaja
                                 mengenai edukasi seksual.
@@ -121,7 +128,7 @@ export default function TentangKami() {
                 <div className="flex col-span-12 items-center justify-center">
                     <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-4">
                         {/* Div "Misi Kami" */}
-                        <div className="h-[400px] lg:h-[592px] bg-pink flex flex-col justify-center items-center rounded-md relative order-1 md:order-2">
+                        <div className="h-[400px] lg:h-[592px] bg-pink flex flex-col justify-center items-center rounded-md relative order-1 md:order-2" data-aos='flip-left'>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 top-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full right-4 top-4"></div>
                             <div className="w-[30px] h-[30px] bg-white absolute rounded-full left-4 bottom-4"></div>
@@ -135,7 +142,7 @@ export default function TentangKami() {
                         </div>
 
                         {/* Div dengan teks */}
-                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex flex-col justify-center items-center rounded-md text-lg md:text-2xl order-2 md:order-1">
+                        <div className="h-[400px] lg:h-[592px] p-8 bg-white flex flex-col justify-center items-center rounded-md text-lg md:text-2xl order-2 md:order-1" data-aos='flip-right' data-aos-delay='200'>
                             <p className="text-pink font-bold text-center">
                                 Menghadirkan platform pembelajaran edukasi
                                 seksual yang sehat, aman, dan seru.
@@ -154,13 +161,13 @@ export default function TentangKami() {
                 {/* Tim Kami */}
                 <div className="flex item-center col-span-12 flex-col">
                     <div className="flex justify-center mb-4">
-                        <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue">
+                        <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] text-blue" data-aos='fade'>
                             <span className="font-bold">Tim</span> Kami
                         </h2>
                     </div>
                     <div className="grid items-center justify-center grid-rows-3 md:grid-rows-1 md:grid-cols-3 pt-4 px-12 gap-4">
                         {/* Gavriel Section */}
-                        <div className="team-member relative group overflow-hidden rounded-lg">
+                        <div className="team-member relative group overflow-hidden rounded-lg" data-aos='fade-up'>
                             <Image
                                 src="/assets/foto_profile/gavriel.png"
                                 width={500}
@@ -180,7 +187,7 @@ export default function TentangKami() {
                         </div>
 
                         {/* Kevin Section */}
-                        <div className="team-member relative group overflow-hidden rounded-lg">
+                        <div className="team-member relative group overflow-hidden rounded-lg" data-aos='fade-up' data-aos-delay='200'>
                             <Image
                                 src="/assets/foto_profile/kevin.png"
                                 width={500}
@@ -200,7 +207,7 @@ export default function TentangKami() {
                         </div>
 
                         {/* Fatih Section */}
-                        <div className="team-member relative group overflow-hidden rounded-lg">
+                        <div className="team-member relative group overflow-hidden rounded-lg" data-aos='fade-up' data-aos-delay='400'>
                             <Image
                                 src="/assets/foto_profile/fatih.jpg"
                                 width={500}

@@ -1,7 +1,11 @@
 'use client';
+
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/Footer"
@@ -138,26 +142,30 @@ export default function LevelDetail({ params }: LevelDetailProps) {
         }
     ];
 
+    useEffect(() => {
+        AOS.init();
+    });
+
     return (
         <>
             <Navbar />
             <Section className="bg-dark-slate py-12 md:py-20">
                 <div className="col-span-12 md:col-span-6 text-white">
-                    <Link href={`/eksplor/${params.roadmapTopicSlug}`} className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-white">
+                    <Link href={`/eksplor/${params.roadmapTopicSlug}`} className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-white" data-aos='fade'>
                         <ChevronLeft className="fill-white" />
                         <span>Kembali</span>
                     </Link>
-                    <h1 className="text-3xl lg:text-5xl font-bold drop-shadow-lg mt-10">{params.levelSlug}</h1>
-                    <p className="mt-6 text-sm lg:text-base">Ayo kita kenalan sama organ reproduksi kita masing-masing dan ketahui cara kerjanya serta manfaatnya!</p>
+                    <h1 className="text-3xl lg:text-5xl font-bold drop-shadow-lg mt-10" data-aos='fade' data-aos-delay='150'>{params.levelSlug}</h1>
+                    <p className="mt-6 text-sm lg:text-base" data-aos='fade' data-aos-delay='300'>Ayo kita kenalan sama organ reproduksi kita masing-masing dan ketahui cara kerjanya serta manfaatnya!</p>
                 </div>
                 <div className="col-span-12 md:col-span-6 mt-6 md:mt-0 flex items-center justify-center">
-                    <Image width={2100} height={1400} src='/assets/organ-reproduksi.png' alt="Banner" className="w-3/4 md:w-full h-fit drop-shadow-xl" />
+                    <Image width={2100} height={1400} src='/assets/organ-reproduksi.png' alt="Banner" className="w-3/4 md:w-full h-fit drop-shadow-xl" data-aos='fade-down' data-aos-delay='225'/>
                 </div>
             </Section>
             <Section className="bg-soft-cream py-20">
                 <div className="col-span-12 flex flex-col gap-y-8">
                     {levelMaterials.map(material => (
-                        <div className="flex flex-col gap-y-8 p-6 md:p-8 bg-white rounded-md shadow-md leading-relaxed" key={material.title}>
+                        <div className="flex flex-col gap-y-8 p-6 md:p-8 bg-white rounded-md shadow-md leading-relaxed" key={material.title} data-aos='fade-up'>
                             <div className="flex justify-between items-center cursor-pointer" onClick={() => handleOpenMaterial(material.title)}>
                                 <h1 className="font-bold text-lg md:text-xl">{material.title}</h1>
                                 <ChevronDown />
