@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -13,6 +15,7 @@ import { Envelope, Lock } from '@/components/icons';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import useStore from '../../../store/UseStore';
 
 export default function Login() {
     useEffect(() => {
@@ -24,12 +27,16 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    interface DecodedToken {
+        sub: string;
+        jti: string;
+        [key: string]: string | number; // Allows for additional claims like nameidentifier
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Debugging logs to ensure email and password are set
-        console.log('Email:', email);
-        console.log('Password:', password);
+        const { setUserId } = useStore.getState();
 
         try {
             const response = await fetch('/api/login', {
@@ -40,8 +47,6 @@ export default function Login() {
                 body: JSON.stringify({ email, password }),
             });
 
-            console.log(response.status);
-
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(
@@ -49,12 +54,31 @@ export default function Login() {
                         'Login failed. Please check your credentials.',
                 );
             }
+            const { message, token } = await response.json();
 
-            // Redirect to dashboard after successful login
+            console.log('message: ', message);
+
+            // Decode the JWT token to extract user information
+            const decoded: DecodedToken = jwtDecode(token);
+
+            // Access the `nameidentifier` claim
+            const userId =
+                decoded[
+                    'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                ];
+
+            console.log('User ID:', userId);
+
+            setUserId(Number(userId));
+
+            // Save the token in local storage or a context for subsequent API requests
+            localStorage.setItem('jwt', token);
+
+            // Redirect to the dashboard or another page
             router.push('/');
         } catch (err: any) {
             setError(err.message);
-            console.log(err.message);
+            console.error(err.message);
         }
     };
 
@@ -69,14 +93,14 @@ export default function Login() {
                         height={512}
                         className="absolute 2xl:relative size-[100px] lg:size-[440px] 2xl:size-[512px] left-0 top-[calc(50%-220px)]"
                         alt="Hello Image"
-                        data-aos='fade-right'
+                        data-aos="fade-right"
                     />
                 </div>
                 <form
                     onSubmit={handleSubmit}
                     className="col-span-12 lg:col-span-7 flex flex-col gap-y-6 lg:gap-y-12 bg-white rounded-md p-8 lg:p-12 h-fit"
-                    data-aos='fade'
-                    data-aos-delay='200'
+                    data-aos="fade"
+                    data-aos-delay="200"
                 >
                     <div className="flex flex-col gap-y-1 lg:gap-y-2">
                         <p className="text-lg lg:text-xl font-bold text-blue">

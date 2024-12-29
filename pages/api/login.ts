@@ -1,12 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
+import useStore from '../../store/UseStore';
+import {jwtDecode} from 'jwt-decode';
+
+interface DecodedToken {
+    [key: string]: string; // Use a flexible type for claims
+}
 
 export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { email, password } = req.body;
 
         try {
-            const response = await fetch('http://localhost:5215/api/Users/Login', {
+            const authUrl = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/Auth/Login`;
+            console.log(authUrl);
+
+            // const authUrl = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/Auth/Login`;
+            // console.log(`AUTH URL: ${authUrl}`);
+
+            const response = await fetch(authUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -17,11 +29,23 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
             console.log('Backend response status: ', response.status);
 
             if (!response.ok) {
-                throw new Error('Login failed');
+                const errorResponse = await response.json();
+                console.error('Backend error response:', errorResponse);
+                throw new Error(errorResponse.message || 'Login failed');
             }
 
             const data = await response.json();
-            const { token } = data;
+            const { message, token } = data;
+
+            console.log('message: ', message);
+            console.log('token: ', token);
+
+            // Decode the JWT token to get userId (nameidentifier claim)
+            const decoded: DecodedToken = jwtDecode(token);
+            const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+            console.log('Decoded User ID:', userId);
+
+
 
             // Set cookie with JWT token
             res.setHeader('Set-Cookie', serialize('jwt', token, {
@@ -31,7 +55,11 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
                 path: '/',
             }));
 
-            res.status(200).json({ message: 'Login successful' });
+            res.status(200).json({
+                message: message,
+                token: token,
+            });
+
         } catch (error) {
             res.status(401).json({ message: 'Invalid credentials' });
         }
