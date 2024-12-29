@@ -9,7 +9,7 @@ export function Navbar() {
     const pathName = usePathname();
 
     return (
-        <header className="relative">
+        <header className="relative dark:bg-white">
             <Container>
                 <div className="py-4 lg:py-6 flex items-center justify-between">
                     <Link href="/" className="text-blue text-lg lg:text-3xl font-bold">Kenali.Diri</Link>

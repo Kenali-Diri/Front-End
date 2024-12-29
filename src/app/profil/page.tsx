@@ -70,12 +70,19 @@ export default function Profil() {
             <Section className="bg-soft-cream py-20 overflow-hidden relative">
                 <div className="col-span-12 ">
                     <div className=" grid grid-cols-12 gap-6">
-                        <Link href={`/`} className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-dark-slate" data-aos='fade'>
+                        <Link
+                            href={`/`}
+                            className="flex items-center size-fit gap-1 text-sm lg:text-base hover:underline text-dark-slate"
+                            data-aos="fade"
+                        >
                             <ChevronLeft className="fill-dark-slate" />
                             <span>Kembali</span>
                         </Link>
                         <div className="col-span-12">
-                            <h2 className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] font-bold bg-gradient-to-r from-blue to-pink bg-clip-text text-transparent h-16 w-fit" data-aos='fade'>
+                            <h2
+                                className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] font-bold bg-gradient-to-r from-blue to-pink bg-clip-text text-transparent h-16 w-fit"
+                                data-aos="fade"
+                            >
                                 Pengaturan Akun
                             </h2>
                         </div>
@@ -84,7 +91,10 @@ export default function Profil() {
                             <div className="grid grid-rows-1 md:grid-rows-0 grid-cols-12 gap-6">
                                 {/* left side */}
                                 <div className="col-span-12 md:col-span-9 flex flex-col gap-6">
-                                    <div className="flex flex-col gap-4 bg-white p-6 rounded-lg" data-aos='fade'>
+                                    <div
+                                        className="flex flex-col gap-4 bg-white p-6 rounded-lg"
+                                        data-aos="fade"
+                                    >
                                         <div>
                                             <p className="font-bold text-dark-slate text-2xl">
                                                 Detail Profil
@@ -120,24 +130,30 @@ export default function Profil() {
 
                                         <div className="flex gap-4">
                                             <div className="flex flex-col w-[50%]">
-                                                <p className='font-bold'>Email</p>
+                                                <p className="font-bold">
+                                                    Email
+                                                </p>
                                                 <input
                                                     type="email"
                                                     value="DavidJu@gmail.com"
-                                                    className={`border border-gray-300 rounded p-2 ${!edit
-                                                        ? 'opacity-40'
-                                                        : 'opacity-100'
-                                                        }`}
+                                                    className={`border border-gray-300 rounded p-2 ${
+                                                        !edit
+                                                            ? 'opacity-40'
+                                                            : 'opacity-100'
+                                                    }`}
                                                     disabled={!edit}
                                                 />
                                             </div>
                                             <div className="flex flex-col w-[50%]">
-                                                <p className='font-bold'>Gender</p>
+                                                <p className="font-bold">
+                                                    Gender
+                                                </p>
                                                 <select
-                                                    className={`border border-gray-300 rounded p-2 ${!edit
-                                                        ? 'opacity-40'
-                                                        : 'opacity-100'
-                                                        }`}
+                                                    className={`border border-gray-300 rounded p-2 ${
+                                                        !edit
+                                                            ? 'opacity-40'
+                                                            : 'opacity-100'
+                                                    }`}
                                                     disabled={!edit}
                                                 >
                                                     <option value="volvo">
@@ -152,7 +168,11 @@ export default function Profil() {
                                     </div>
 
                                     <div className="md:col-span-9">
-                                        <div className="flex flex-col gap-4 bg-white p-6 rounded-lg" data-aos='fade' data-aos-anchor-placement='top-bottom'>
+                                        <div
+                                            className="flex flex-col gap-4 bg-white p-6 rounded-lg"
+                                            data-aos="fade"
+                                            data-aos-anchor-placement="top-bottom"
+                                        >
                                             <div className="flex flex-col gap-4 bg-white p-6 rounded-lg">
                                                 <h2 className="font-bold text-dark-slate text-3xl">
                                                     Badge
@@ -163,8 +183,9 @@ export default function Profil() {
                                                     style={{
                                                         maxHeight: showMore
                                                             ? '2000px'
-                                                            : `${2 * 100 + 16
-                                                            }px`,
+                                                            : `${
+                                                                  2 * 100 + 16
+                                                              }px`,
                                                     }}
                                                 >
                                                     <div
@@ -179,8 +200,9 @@ export default function Profil() {
                                                                 totalBadgesToShow,
                                                             )
                                                             .map((_, index) => {
-                                                                const badgeAlt = `badge-${index + 1
-                                                                    }`;
+                                                                const badgeAlt = `badge-${
+                                                                    index + 1
+                                                                }`;
                                                                 const badgeSrc = `/assets/Badge3L,Leceh,Lari,Lapor!.png`;
                                                                 return (
                                                                     <Image
@@ -213,34 +235,47 @@ export default function Profil() {
                                                 </div>
                                                 {badgeList.length >=
                                                     totalBadgesToShow && (
-                                                        <button
-                                                            className="mt-4 text-blue font-bold"
-                                                            onClick={() =>
-                                                                setShowMore(
-                                                                    !showMore,
-                                                                )
-                                                            }
-                                                        >
-                                                            {showMore
-                                                                ? 'Show Less'
-                                                                : 'Show More'}
-                                                        </button>
-                                                    )}
+                                                    <button
+                                                        className="mt-4 text-blue font-bold"
+                                                        onClick={() =>
+                                                            setShowMore(
+                                                                !showMore,
+                                                            )
+                                                        }
+                                                    >
+                                                        {showMore
+                                                            ? 'Show Less'
+                                                            : 'Show More'}
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
 
-                                    <button className="text-white text-center bg-pink py-2 px-16 hover:bg-pink-hovered w-fit rounded-md hidden md:inline-block" data-aos='fade' data-aos-anchor-placement='top-bottom'>
+                                    <button
+                                        className="text-white text-center bg-pink py-2 px-16 hover:bg-pink-hovered w-fit rounded-md hidden md:inline-block"
+                                        data-aos="fade"
+                                        data-aos-anchor-placement="top-bottom"
+                                    >
                                         Keluar
                                     </button>
                                 </div>
                                 {/* right side */}
                                 <div className="col-span-12 md:col-span-3 flex flex-col gap-6">
-                                    <div className="bg-white px-4 py-8 flex flex-col justify-center items-center rounded-md relative" data-aos='fade'>
-                                        <h2 className="text-4xl md:text-lg lg:text-4xl text-center text-dark-slate font-bold" data-aos='fade'>
+                                    <div
+                                        className="bg-white px-4 py-8 flex flex-col justify-center items-center rounded-md relative"
+                                        data-aos="fade"
+                                    >
+                                        <h2
+                                            className="text-4xl md:text-lg lg:text-4xl text-center text-dark-slate font-bold"
+                                            data-aos="fade"
+                                        >
                                             Total Point
                                         </h2>
-                                        <h1 className="text-8xl md:text-6xl lg:text-8xl text-blue font-bold" data-aos='fade'>
+                                        <h1
+                                            className="text-8xl md:text-6xl lg:text-8xl text-blue font-bold"
+                                            data-aos="fade"
+                                        >
                                             150
                                         </h1>
                                         <Image
@@ -249,11 +284,15 @@ export default function Profil() {
                                             height={100}
                                             alt="mahkota"
                                             className="hidden md:inline absolute right-[10px] top-[-5px] !translate-x-1/2 !-translate-y-1/2"
-                                            data-aos='fade'
+                                            data-aos="fade"
                                         />
                                     </div>
 
-                                    <div className="bg-white px-6 py-8 rounded-md flex flex-col gap-8" data-aos='fade' data-aos-anchor-placement='top-bottom'>
+                                    <div
+                                        className="bg-white px-6 py-8 rounded-md flex flex-col gap-8"
+                                        data-aos="fade"
+                                        data-aos-anchor-placement="top-bottom"
+                                    >
                                         <div>
                                             <h2 className="text-xl lg:text-3xl text-dark-slate font-bold">
                                                 Ganti Password
@@ -270,7 +309,11 @@ export default function Profil() {
                                         </button>
                                     </div>
 
-                                    <button className="text-white text-center bg-pink rounded-md p-2 md:hidden" data-aos='fade' data-aos-anchor-placement='top-bottom'>
+                                    <button
+                                        className="text-white text-center bg-pink rounded-md p-2 md:hidden"
+                                        data-aos="fade"
+                                        data-aos-anchor-placement="top-bottom"
+                                    >
                                         Keluar
                                     </button>
                                 </div>
