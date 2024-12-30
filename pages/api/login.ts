@@ -1,13 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
-import useStore from '../../store/UseStore';
-import {jwtDecode} from 'jwt-decode';
+
+import { jwtDecode } from 'jwt-decode';
 
 interface DecodedToken {
     [key: string]: string; // Use a flexible type for claims
 }
 
-export default async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
+export default async function loginHandler(
+    req: NextApiRequest,
+    res: NextApiResponse,
+) {
     if (req.method === 'POST') {
         const { email, password } = req.body;
 
@@ -42,24 +45,27 @@ export default async function loginHandler(req: NextApiRequest, res: NextApiResp
 
             // Decode the JWT token to get userId (nameidentifier claim)
             const decoded: DecodedToken = jwtDecode(token);
-            const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+            const userId =
+                decoded[
+                    'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                ];
             console.log('Decoded User ID:', userId);
 
-
-
             // Set cookie with JWT token
-            res.setHeader('Set-Cookie', serialize('jwt', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                maxAge: 60 * 60 * 24, // 1 day
-                path: '/',
-            }));
+            res.setHeader(
+                'Set-Cookie',
+                serialize('jwt', token, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === 'production',
+                    maxAge: 60 * 60 * 24, // 1 day
+                    path: '/',
+                }),
+            );
 
             res.status(200).json({
                 message: message,
                 token: token,
             });
-
         } catch (error) {
             res.status(401).json({ message: 'Invalid credentials' });
         }
