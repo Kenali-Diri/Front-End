@@ -36,8 +36,7 @@ interface UserInformation {
 export function Navbar() {
     const pathName = usePathname();
     const [data, setData] = useState<UserInformation>();
-
-    const session = localStorage.getItem('jwt');
+    const [session, setSession] = useState<string | null>('');
 
     const fetchData = async (id: string) => {
         const response = await fetch(
@@ -46,6 +45,10 @@ export function Navbar() {
         const data = await response.json();
         setData(data);
     };
+
+    useEffect(() => {
+        setSession(localStorage.getItem('jwt'));
+    }, []);
 
     useEffect(() => {
         if (session) {

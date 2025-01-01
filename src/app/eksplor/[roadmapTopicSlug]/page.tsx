@@ -24,17 +24,17 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
         {
             name: 'Organ Reproduksi',
             slug: 'organ-reproduksi',
-            subtitle: 'Subtitle'
+            subtitle: 'Short description'
         },
         {
             name: 'Cara "Menjaga" Diri',
             slug: 'cara-menjaga-diri',
-            subtitle: 'Subtitle'
+            subtitle: 'Short description'
         },
         {
             name: 'Kesehatan Kulit',
             slug: 'kesehatan-kulit',
-            subtitle: 'Subtitle'
+            subtitle: 'Short description'
         },
     ]);
 
