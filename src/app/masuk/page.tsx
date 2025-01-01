@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import Dialog from '@/components/Dialog';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
@@ -17,6 +18,12 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import useStore from '../../../store/UseStore';
 
+interface DecodedToken {
+    sub: string;
+    jti: string;
+    [key: string]: string | number; // Allows for additional claims like nameidentifier
+}
+
 export default function Login() {
     useEffect(() => {
         AOS.init();
@@ -25,16 +32,21 @@ export default function Login() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
-    interface DecodedToken {
-        sub: string;
-        jti: string;
-        [key: string]: string | number; // Allows for additional claims like nameidentifier
-    }
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorDialog, setErrorDialog] = useState({
+        visible: false,
+        message: ''
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setIsLoading(true);
+
+        if(isLoading) {
+            return;
+        }
 
         const { setUserId } = useStore.getState();
 
@@ -77,11 +89,15 @@ export default function Login() {
             // Redirect to the dashboard or another page
             router.push('/');
         } catch (err: any) {
-            setError(err.message);
-            console.error(err.message);
+            setErrorDialog(prev => ({
+                ...prev,
+                message: err.message,
+                visible: true
+            }));
         }
+
+        setIsLoading(false);
     };
-    ``;
 
     return (
         <>
@@ -135,7 +151,6 @@ export default function Login() {
                             Lupa kata sandi?
                         </Link>
                     </div>
-                    {error && <p className="text-red-500 text-sm">{error}</p>}
                     <div className="flex flex-col items-center lg:items-end gap-y-6">
                         <button
                             className="py-3 lg:py-4 px-6 lg:px-12 bg-blue hover:bg-blue-hovered text-white text-xs lg:text-sm font-semibold lg:font-bold rounded-md w-full lg:w-fit"
@@ -156,6 +171,11 @@ export default function Login() {
                 </form>
             </Section>
             <Footer />
+
+            <Dialog open={errorDialog.visible} type="error_message" message={errorDialog.message} handleClose={() => setErrorDialog(prev => ({
+                ...prev,
+                visible: false
+            }))}/>
         </>
     );
 }

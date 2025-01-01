@@ -1,3 +1,4 @@
+import { transform } from 'next/dist/build/swc';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -62,8 +63,7 @@ const config: Config = {
                 shake: 'shake 0.3s ease-in-out 3',
                 'fade-in': 'fade-in 0.3s ease-in-out',
                 'fade-out': 'fade-out 0.3s ease-in-out',
-                'fade-in-out':
-                    'fade-in 0.3s ease-in-out 0s, fade-out 0.2s ease-in-out 2.3s forwards',
+                'fade-in-out': 'fade-in 0.3s ease-in-out 0s, fade-out 0.2s ease-in-out 2.3s forwards',
                 'loading-progress-bar': 'loading-progress-bar 2.5s linear',
             },
         },

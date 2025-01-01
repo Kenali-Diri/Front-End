@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import Dialog from '@/components/Dialog';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
@@ -14,10 +16,18 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 
 export default function Register() {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
+
     const [registerForm, setRegisterForm] = useState({
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmPassword: '',
+    });
+
+    const [errorDialog, setErrorDialog] = useState({
+        visible: false,
+        message: ''
     });
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +40,51 @@ export default function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        // TODO: Send register data to API
+        if(isLoading) {
+            return;
+        }
+
+        setIsLoading(true);
+
+        if(registerForm.confirmPassword !== registerForm.password) {
+            setErrorDialog(prev => ({
+                ...prev,
+                visible: true,
+                message: 'Konfirmasi kata sandi tidak cocok'
+            }));
+
+            setIsLoading(false);
+
+            return;
+        }
+
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: registerForm.email.split('@')[0],
+                email: registerForm.email,
+                password: registerForm.password,
+                gender: ''
+            })
+        });
+        const responseBody = await response.json();
+
+        setIsLoading(false);
+
+        if(!response.ok) {
+            setErrorDialog(prev => ({
+                ...prev,
+                visible: true,
+                message: 'Kesalahan Server'
+            }));
+
+            return;
+        }
+
+        router.push('/masuk');
     }
 
     useEffect(() => {
@@ -106,6 +160,11 @@ export default function Register() {
                 </div>
             </Section>
             <Footer />
+
+            <Dialog open={errorDialog.visible} type="error_message" message={errorDialog.message} handleClose={() => setErrorDialog(prev => ({
+                ...prev,
+                visible: false
+            }))}/>
         </>
     );
 }

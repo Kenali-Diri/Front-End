@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-type DialogType = 'selesai_level' | 'badge' | 'selesai_game';
+type DialogType = 'selesai_level' | 'badge' | 'selesai_game' | 'error_message';
 
 interface DialogProps {
     type: DialogType;
@@ -10,6 +10,7 @@ interface DialogProps {
     score?: number;
     src?: string;
     imgName?: string;
+    message?: string;
 }
 
 const Dialog = ({
@@ -19,6 +20,7 @@ const Dialog = ({
     score,
     src,
     imgName,
+    message
 }: DialogProps) => {
     if (type === 'selesai_level' && open) {
         return (
@@ -92,6 +94,16 @@ const Dialog = ({
             <div className="fixed top-8 p-4 bg-white text-sm md:text-base rounded-md shadow-md shadow-black/20 left-1/2 -translate-x-1/2 animate-fade-in-out w-10/12 sm:w-fit">
                 Hore! Kamu dapat <span className="font-bold">{score}</span>{' '}
                 poin!
+                <div
+                    className="absolute left-0 bottom-0 bg-blue w-full h-1 rounded-b-md animate-loading-progress-bar"
+                    onAnimationEnd={() => handleClose()}
+                ></div>
+            </div>
+        );
+    } else if (type === 'error_message' && open) {
+        return (
+            <div className="fixed top-8 p-4 bg-white text-sm md:text-base rounded-md shadow-md shadow-black/20 left-1/2 -translate-x-1/2 animate-fade-in-out w-10/12 sm:w-fit text-red-500 font-medium">
+                {message}
                 <div
                     className="absolute left-0 bottom-0 bg-blue w-full h-1 rounded-b-md animate-loading-progress-bar"
                     onAnimationEnd={() => handleClose()}

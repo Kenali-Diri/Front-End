@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { serialize } from 'cookie';
 
 import { jwtDecode } from 'jwt-decode';
+import { SERVER_URL } from '@/configs/app';
 
 interface DecodedToken {
     [key: string]: string; // Use a flexible type for claims
@@ -15,7 +16,7 @@ export default async function loginHandler(
         const { email, password } = req.body;
 
         try {
-            const authUrl = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/Auth/Login`;
+            const authUrl = `${SERVER_URL}/Auth/Login`;
             console.log(authUrl);
 
             // const authUrl = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/Auth/Login`;
@@ -67,7 +68,7 @@ export default async function loginHandler(
                 token: token,
             });
         } catch (error) {
-            res.status(401).json({ message: 'Invalid credentials' });
+            res.status(401).json({ message: 'Email atau password kamu salah' });
         }
     } else {
         res.setHeader('Allow', ['POST']);
