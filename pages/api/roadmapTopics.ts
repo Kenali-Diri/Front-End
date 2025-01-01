@@ -1,11 +1,9 @@
-// pages/api/roadmapTopics.ts
-
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const API_URL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/RoadmapTopic`
 
 // API handler function
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function roadmapTopicHandler(req: NextApiRequest, res: NextApiResponse) {
     try {
         res.setHeader('Cache-Control', 'no-store, max-age=0, must-revalidate');  // Prevent caching
 
@@ -14,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             method: 'GET',
             headers: {
             'accept': '*/*',
-            'Authorization': req.headers.authorization || '', // Pass
+            Authorization: req.headers.authorization || '', // Pass
             cache: 'no-store'
         }});
 

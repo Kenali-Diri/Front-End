@@ -5,12 +5,7 @@ import { Container } from './core/Container';
 import { Menu, Close } from './icons';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
-
-interface DecodedToken {
-    [key: string]: string; // Use a flexible type for claims
-}
 
 interface Badge {
     id: number;
@@ -38,28 +33,40 @@ export function Navbar() {
     const [data, setData] = useState<UserInformation>();
     const [session, setSession] = useState<string | null>('');
 
-    const fetchData = async (id: string) => {
-        const response = await fetch(
-            `http://localhost:5215/api/UserInformation/${id}`,
-        );
-        const data = await response.json();
-        setData(data);
+    const fetchData = async () => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            try {
+                // Send JWT to API route to fetch user data
+                const response = await fetch('/api/userInformation', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const userInfo: UserInformation = await response.json();
+                    // console.log(`last main game quiz id: ${userInfo.userProgress.lastMainGameQuizID}`);
+                    setData(userInfo);
+                } else {
+                    console.error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
     };
 
     useEffect(() => {
-        setSession(localStorage.getItem('jwt'));
-    }, []);
+        const token = localStorage.getItem('jwt');
+        setSession(token);
 
-    useEffect(() => {
-        if (session) {
-            const decoded: DecodedToken = jwtDecode(session);
-            const userId =
-                decoded[
-                    'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-                ];
-            fetchData(userId);
+        if (token) {
+            fetchData();
         }
-    }, [session]);
+    }, []);
 
     return (
         <header className="relative dark:bg-white">
