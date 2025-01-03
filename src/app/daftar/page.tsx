@@ -14,6 +14,7 @@ import { Envelope, Lock } from '@/components/icons';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { titleCase } from 'title-case';
 
 export default function Register() {
     const router = useRouter();
@@ -64,7 +65,7 @@ export default function Register() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                name: registerForm.email.split('@')[0],
+                name: titleCase(registerForm.email.split('@')[0]),
                 email: registerForm.email,
                 password: registerForm.password,
                 gender: ''

@@ -1,4 +1,4 @@
-interface Game {
+export interface Game {
     question: string,
     answer: string,
     image?: string,

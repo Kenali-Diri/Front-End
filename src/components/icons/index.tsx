@@ -2,6 +2,7 @@ import { Article } from "./Article";
 import { ChevronDown } from "./ChevronDown";
 import { ChevronLeft } from "./ChevronLeft";
 import { Close } from "./Close";
+import { Crown } from "./Crown";
 import { Diamond } from "./Diamond";
 import { Envelope } from "./Envelope";
 import { Game } from "./Game";
@@ -15,6 +16,7 @@ export {
     ChevronLeft,
     ChevronDown,
     Close,
+    Crown,
     Diamond,
     Envelope,
     Game,

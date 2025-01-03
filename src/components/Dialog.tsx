@@ -11,6 +11,7 @@ interface DialogProps {
     src?: string;
     imgName?: string;
     message?: string;
+    badgeContent?: string;
 }
 
 const Dialog = ({
@@ -20,7 +21,8 @@ const Dialog = ({
     score,
     src,
     imgName,
-    message
+    message,
+    badgeContent
 }: DialogProps) => {
     if (type === 'selesai_level' && open) {
         return (
@@ -71,18 +73,19 @@ const Dialog = ({
                 className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
                 onClick={() => handleClose()}
             >
-                <div className="w-[335px] h-[335px] bg-gradient-to-r from-[#435BC0] to-[#F6666F] flex justify-center items-center rounded-md">
-                    <div className="w-[320px] h-[320px] bg-white rounded-md flex flex-col justify-center items-center gap-8">
+                <div className="bg-gradient-to-r from-[#435BC0] to-[#F6666F] rounded-md p-2">
+                    <div className="min-w-80 min-h-80 bg-white rounded-md flex flex-col justify-center items-center gap-4 w-full h-full p-0">
                         <Image
                             src={src || ''}
-                            width={150}
-                            height={100}
+                            width={800}
+                            height={800}
                             alt={imgName || ''}
+                            className='size-1/2 object-contain'
                         />
 
                         <div>
-                            <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent">
-                                Badge3L, Leceh, Lari, Lapor!
+                            <h2 className="text-2xl font-bold text-center bg-gradient-to-r from-[#435BC0] to-[#F6666F] bg-clip-text text-transparent max-w-72">
+                                {badgeContent}
                             </h2>
                         </div>
                     </div>

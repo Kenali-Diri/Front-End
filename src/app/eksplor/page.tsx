@@ -13,6 +13,9 @@ import { ChevronLeft, Game, Medal } from '@/components/icons';
 import { Diamond } from '@/components/icons/Diamond';
 import { Navbar } from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
+import { RoadmapTopic } from '@/interfaces/RoadmapTopic';
+import { UserInformation } from '@/interfaces/UserInformation';
+import { Level } from '@/interfaces/Level';
 
 interface RoadmapTopicItemConfig {
     [position: number]: {
@@ -61,48 +64,112 @@ const roadmapTopicItemConfig: RoadmapTopicItemConfig = {
 
 export default function Explore() {
     let centerLineDirection = 'VERTICAL';
-    const currentRoadmapTopicIndex = 1;
+
+    const [userInfo, setUserInfo] = useState<UserInformation>({
+        email: '',
+        gender: '',
+        id: 1,
+        name: '',
+        profileImage: '',
+        score: 0,
+        badge: [],
+        userProgress: {
+            lastRoadmapTopicID: 1,
+            lastLevelModuleID: 1,
+            lastLevelID: 1,
+            lastMiniGameID: 1,
+            lastMainGameQuizID: 1,
+            completeAt: null,
+        }
+    });
+
     const [roadmapTopics, setRoadmapTopics] = useState<Array<RoadmapTopic>>([]);
     const [error, setError] = useState('');
     const router = useRouter();
 
-    // Fetching data on component mount
-    useEffect(() => {
-        AOS.init();
-
+    const fetchData = async () => {
         // Check if the window is defined (client-side)
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem('jwt'); // Retrieve token from localStorage
             if (token) {
-                const fetchData = async () => {
-                    try {
-                        const response = await fetch('/api/roadmapTopics', {
-                            method: 'GET',
-                            headers: {
-                                Authorization: `Bearer ${token}`, // Include the token in the request
-                            },
-                        });
+                try {
+                    const response = await fetch('/api/roadmapTopics', {
+                        method: 'GET',
+                        headers: {
+                            Authorization: `Bearer ${token}`, // Include the token in the request
+                        },
+                    });
 
-                        if (!response.ok) {
-                            throw new Error('Failed to fetch roadmap topics');
-                        }
-
-                        const data = await response.json();
-                        setRoadmapTopics(data); // Assuming your response returns the roadmap topics
-                    } catch (err) {
-                        setError('Error fetching data');
-                        console.error(err);
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch roadmap topics');
                     }
-                };
 
-                fetchData();
+                    const data = await response.json();
+                    setRoadmapTopics(data); // Assuming your response returns the roadmap topics
+                } catch (err) {
+                    setError('Error fetching data');
+                    console.error(err);
+                }
             } else {
                 setError('No authentication token found');
                 // Use router.push inside useEffect for client-side navigation
                 router.push('/masuk'); // Redirect to login page if no token is found
             }
         }
+    }
+
+    const fetchUserInformation = async () => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            try {
+                // Send JWT to API route to fetch user data
+                const response = await fetch('/api/userInformation', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    const userInfo: UserInformation = await response.json();
+                    if (userInfo.gender === '') {
+                        userInfo.gender = 'Male';
+                    }
+
+                    setUserInfo(userInfo);
+                } else {
+                    console.error('Failed to fetch user data');
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+    }
+
+    const getCompletedLevelCountPerTopic = (levels: Array<Level>): number => {
+        if(userInfo) {
+            const previousCompletedLevels = levels.filter(level => level.id <= userInfo.userProgress.lastLevelID);
+
+            if(!userInfo.userProgress.completeAt) {
+                previousCompletedLevels.pop();
+            }
+
+            return previousCompletedLevels.length;
+        }
+
+        return 0;
+    }
+
+    // Fetching data on component mount
+    useEffect(() => {
+        AOS.init();
+
+        fetchData();
+        fetchUserInformation();
     }, []);
+
+
 
     return (
         <>
@@ -141,7 +208,7 @@ export default function Explore() {
                                 data-aos="fade"
                             >
                                 <span>Progres-mu</span>
-                                <div className="w-[calc(100%-1.5rem)] h-[calc(100%-8px)] absolute top-[calc(50%-1.5px)] -translate-y-1/2 left-1 md:left-auto md:right-1 border-2 border-dashed border-r-0 border-l-2 md:border-l-0 md:border-r-2 border-medium-slate before:size-7 before:rotate-45 before:bg-transparent before:top-[calc(50%-1.5px)] before:-translate-y-1/2 before:translate-x-1/2 before:right-0 md:before:-translate-x-1/2 md:before:left-0 before:absolute before:border-l-2 before:border-b-2 before:border-r-0 before:border-t-0 md:before:border-r-2 md:before:border-t-2 md:before:border-b-0 md:before:border-l-0 before:border-dashed before:border-medium-slate"></div>
+                                <div className="w-[calc(100%-1.5rem)] h-[calc(100%-8px)] absolute top-[calc(50%)] -translate-y-1/2 left-1 md:left-auto md:right-1 border-2 border-dashed border-r-0 border-l-2 md:border-l-0 md:border-r-2 border-medium-slate before:size-7 before:rotate-45 before:bg-transparent before:top-[calc(50%-1.5px)] before:-translate-y-1/2 before:translate-x-1/2 before:right-0 md:before:-translate-x-1/2 md:before:left-0 before:absolute before:border-l-2 before:border-b-2 before:border-r-0 before:border-t-0 md:before:border-r-2 md:before:border-t-2 md:before:border-b-0 md:before:border-l-0 before:border-dashed before:border-medium-slate"></div>
                             </div>
                             <div className="mt-4 md:mt-6 flex items-start md:items-end flex-col gap-y-3 md:gap-y-4">
                                 <div
@@ -150,7 +217,7 @@ export default function Explore() {
                                     data-aos-delay="150"
                                 >
                                     <span className="text-sm md:text-base font-semibold">
-                                        250
+                                        {userInfo.score}
                                     </span>
                                     <Diamond className="fill-dark-slate" />
                                 </div>
@@ -160,7 +227,7 @@ export default function Explore() {
                                     data-aos-delay="300"
                                 >
                                     <span className="text-sm md:text-base font-semibold ">
-                                        0/16 badge
+                                        {userInfo.badge.length}/16 badge
                                     </span>
                                     <Medal className="fill-dark-slate" />
                                 </div>
@@ -170,7 +237,7 @@ export default function Explore() {
                                     data-aos-delay="450"
                                 >
                                     <span className="text-sm md:text-base font-semibold ">
-                                        0/16 level
+                                        0/{roadmapTopics.reduce((prev, topic) => prev + topic.levels.length, 0)} level
                                     </span>
                                     <Game className="fill-dark-slate" />
                                 </div>
@@ -191,10 +258,9 @@ export default function Explore() {
 
                             return (
                                 <div
-                                    className={`${
-                                        roadmapTopicItemConfig[index % 3]
-                                            .justifyContent
-                                    } flex relative`}
+                                    className={`${roadmapTopicItemConfig[index % 3]
+                                        .justifyContent
+                                        } flex relative`}
                                     key={topic.name}
                                 >
                                     {index % 3 == 0 && index > 0 && (
@@ -202,8 +268,8 @@ export default function Explore() {
                                     )}
 
                                     <Link
-                                        href={`/eksplor/${topic.slug}`}
-                                        className="z-20 relative"
+                                        href={`/eksplor/${topic.id > userInfo.userProgress.lastRoadmapTopicID ? '' : topic.slug}`}
+                                        className={`z-20 relative ${topic.id > userInfo.userProgress.lastRoadmapTopicID ? 'cursor-default' : 'cursor-pointer'}`}
                                         data-aos="zoom-in-up"
                                     >
                                         <div className="bg-soft-cream w-fit h-fit">
@@ -211,28 +277,22 @@ export default function Explore() {
                                                 src={topic.image}
                                                 width={1000}
                                                 height={1000}
-                                                className={`h-28 md:h-36 w-fit ${
-                                                    index >
-                                                    currentRoadmapTopicIndex
-                                                        ? 'grayscale'
-                                                        : ''
-                                                }`}
+                                                className={`h-28 md:h-36 w-fit ${topic.id > userInfo.userProgress.lastRoadmapTopicID ? 'grayscale' : ''}`}
                                                 alt={topic.name}
                                             />
                                         </div>
 
                                         <div
-                                            className={`absolute w-max ps-1 pe-8 md:pe-0 top-0 ${
-                                                index % 3 == 2
-                                                    ? 'text-right top-full mt-4 right-24'
-                                                    : 'left-full'
-                                            }`}
+                                            className={`absolute w-max ps-1 pe-8 md:pe-0 top-0 ${index % 3 == 2
+                                                ? 'text-right top-full mt-4 right-24'
+                                                : 'left-full'
+                                                }`}
                                         >
                                             <h4 className="text-base md:text-xl font-bold ">
                                                 {topic.name}
                                             </h4>
                                             <p className="text-sm md:text-base mt-1">
-                                                {topic.completedLevelCount}
+                                                {getCompletedLevelCountPerTopic(topic.levels)}/{topic.levels.length} level diselesaikan
                                             </p>
                                         </div>
                                     </Link>

@@ -1,15 +1,18 @@
 'use client';
 
 import Link from "next/link";
-import { Game, Medal, Diamond } from "../icons";
+import { Game, Medal, Diamond, Crown } from "../icons";
+import { Level as ILevel } from "@/interfaces/Level";
 
 type ColorVariant = 'blue' | 'pink' | 'dark-slate';
+type LevelType = 'normal' | 'boss';
 
 interface LevelProps {
     roadmapTopicSlug: string,
-    level: Level,
+    level: ILevel,
     variant?: ColorVariant,
     complete?: boolean,
+    type: LevelType
 }
 
 const iconColor: { [key in ColorVariant]: string } = {
@@ -36,10 +39,14 @@ const borderColor: { [key in ColorVariant]: string } = {
     'dark-slate': 'border-dark-slate'
 }
 
-export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = false }: LevelProps) {
+export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = false, type = 'normal' }: LevelProps) {
     return (
         <Link href={`${roadmapTopicSlug}/${level.slug}`} className="bg-white rounded-2xl sm:rounded-full shadow-md flex flex-col sm:flex-row sm:items-center p-6 sm:p-8 gap-y-3 sm:gap-x-6 w-full sm:w-[28rem]" key={level.name} data-aos='fade-up'>
-            <Game className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+            {type === 'boss' ? (
+                <Crown className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+            ) : (
+                <Game className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+            )}
             <div className="grow">
                 <h4 className={`${textColor[variant]} font-bold text-base sm:text-lg`}>{level.name}</h4>
                 <p className="text-xs sm:text-sm">{level.subtitle}</p>

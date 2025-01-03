@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {jwtDecode} from 'jwt-decode';
+import { SERVER_URL } from '@/configs/app';
 
 interface DecodedToken {
     [key: string]: string;
@@ -39,12 +40,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const decoded: DecodedToken = jwtDecode(token);
             const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/UserInformation/${userId}`, {
+            const response = await fetch(`${SERVER_URL}/User/${userId}`, {
                 method: 'GET',
                 headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: '*/*',
-                // cache: 'no-store'
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                    // cache: 'no-store'
                 },
             });
 
@@ -55,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const userInfo: UserInformation = await response.json();
             res.status(200).json(userInfo);
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            // console.error('Error fetching user data:', error);
             res.status(500).json({ message: 'Error fetching user data' });
         }
     } else {

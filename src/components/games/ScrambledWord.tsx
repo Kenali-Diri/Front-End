@@ -5,6 +5,8 @@ import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 
+import { Game } from "@/interfaces/Game";
+
 import { Diamond } from "../icons";
 import { Droppable } from "../core/Droppable";
 import { Draggable } from "../core/Draggable";

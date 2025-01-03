@@ -12,6 +12,10 @@ import { Section } from "@/components/core/Section";
 import { Footer } from "@/components/Footer";
 import { ChevronLeft } from "@/components/icons";
 import { Navbar } from "@/components/Navbar";
+import { Level as ILevel } from "@/interfaces/Level";
+import { RoadmapTopic } from "@/interfaces/RoadmapTopic";
+import slug from "slug";
+import { ClientPageRoot } from "next/dist/client/components/client-page";
 
 interface ExploreDetailProps {
     params: {
@@ -20,7 +24,15 @@ interface ExploreDetailProps {
 }
 
 export default function ExploreDetail({ params }: ExploreDetailProps) {
-    const [levels, setLevels] = useState<Array<Level>>([
+    const [roadmapTopic, setRoadmapTopic] = useState<RoadmapTopic>({
+        name: '',
+        slug: '',
+        image: '',
+        completedLevelCount: '',
+        bannerImage: ''
+    });
+
+    const [levels, setLevels] = useState<Array<ILevel>>([
         {
             name: 'Organ Reproduksi',
             slug: 'organ-reproduksi',
@@ -38,9 +50,48 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
         },
     ]);
 
+    const fetchData = async () => {
+        const token = localStorage.getItem('jwt');
+        
+        if(token) {
+            const roadmapTopicID = params.roadmapTopicSlug.split('-').pop();
+
+            const response = await fetch(`/api/roadmapTopics/${roadmapTopicID}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const responseBody = await response.json();
+
+            setRoadmapTopic({
+                name: responseBody.data.title,
+                slug: slug(`${responseBody.data.title} ${responseBody.data.id}`),
+                image: responseBody.data.image,
+                bannerImage: responseBody.data.bannerImage,
+                completedLevelCount: `${responseBody.data.levels.length.toString()}/${responseBody.data.levels.length.toString()} level diselesaikan`
+            });
+
+            setLevels([
+                ...responseBody.data.levels.map((level: any): ILevel => ({
+                    name: level.name,
+                    slug: slug(`${level.name} ${level.id}`),
+                    // subtitle: `Level ${responseBody.data.id}-${level.id}`,
+                    subtitle: `${level.shortDescription}`
+                })),
+                {
+                    name: 'Boss',
+                    slug: `boss-${responseBody.data.id}`,
+                    subtitle: 'Level Boss'
+                }
+            ]);
+        }
+    }
+
     useEffect(() => {
         AOS.init();
-    })
+        fetchData();
+    }, []);
 
     return (
         <>
@@ -51,8 +102,8 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                         <ChevronLeft className="fill-white" />
                         <span>Kembali</span>
                     </Link>
-                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10" data-aos='fade-down'>{params.roadmapTopicSlug}</h1>
-                    <Image width={4800} height={1600} src='/assets/tubuhku-banner.png' alt="Banner" className="w-full mt-6" data-aos='fade-up' />
+                    <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10" data-aos='fade-down'>{roadmapTopic.name}</h1>
+                    <Image width={4800} height={1600} src={roadmapTopic.bannerImage ? roadmapTopic.bannerImage : '/assets/tubuhku-banner.png'} alt="Banner" className="w-full mt-6" data-aos='fade-up' />
                 </div>
             </Section>
             <Section className="bg-soft-cream rounded-tr-[50%_100%] rounded-tl-[50%_100%] h-20 md:h-36 -mt-28 md:-mt-32 lg:-mt-36"></Section>
@@ -60,7 +111,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 <div className="col-span-12 flex flex-col items-center pb-20">
                     {levels.map((level, index) => (
                         <span className="w-full flex flex-col items-center" key={index}>
-                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant="blue" complete={true} />
+                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={false} />
 
                             {index < levels.length - 1 && (
                                 <div className="border-dashed border-l-2 border-dark-slate h-12" data-aos='fade-up'></div>

@@ -6,27 +6,7 @@ import { Menu, Close } from './icons';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-interface Badge {
-    id: number;
-    name: string;
-    image: string;
-}
-
-interface UserInformation {
-    email: string;
-    gender: string;
-    id: number;
-    name: string;
-    profileImage: string;
-    score: number;
-    badge: Badge[]; // Updated to use Badge[]
-    userProgress: {
-        completeAt: string;
-        lastMainGameQuizID: number;
-        lastMiniGameID: number;
-    };
-}
+import { UserInformation } from '@/interfaces/UserInformation';
 
 export function Navbar() {
     const pathName = usePathname();

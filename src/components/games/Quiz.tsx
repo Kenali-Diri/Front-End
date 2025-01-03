@@ -3,6 +3,8 @@ import { useState } from "react";
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
 
+import { Game } from "@/interfaces/Game";
+
 import { Diamond } from "../icons";
 import Dialog from "../Dialog";
 

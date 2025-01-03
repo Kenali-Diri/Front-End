@@ -1,7 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: [process.env.NEXT_PUBLIC_HOST], // Allow images from localhost
+        // domains: [process.env.NEXT_PUBLIC_HOST], // Allow images from localhost
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'kenalidiriapi.azurewebsites.net',
+                port: '',
+                pathname: '/Images/**',
+                search: '',
+            },
+            {
+                protocol: 'https',
+                hostname: 'localhost',
+                port: '7237',
+                pathname: '/Images/**',
+                search: '',
+            }
+        ]
     },
 };
 

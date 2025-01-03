@@ -1,6 +1,10 @@
-interface RoadmapTopic {
+import { Level } from "./Level";
+
+export interface RoadmapTopic {
+    id: number,
     name: string,
     slug: string,
-    completedLevelCount: string,
-    image: string
+    levels: Array<Level>,
+    image: string,
+    bannerImage: string
 }

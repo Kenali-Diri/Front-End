@@ -1,6 +1,8 @@
+import slug from 'slug';
+import { SERVER_URL } from '@/configs/app';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const API_URL = `${process.env.NEXT_PUBLIC_PROTOCOL}://${process.env.NEXT_PUBLIC_HOST}:${process.env.NEXT_PUBLIC_PORT}/api/RoadmapTopic`
+const API_URL = `${SERVER_URL}/RoadmapTopic`
 
 // API handler function
 export default async function roadmapTopicHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -26,10 +28,17 @@ export default async function roadmapTopicHandler(req: NextApiRequest, res: Next
 
         // Map the data into the format needed by the frontend
         const transformedData = data.map((topic: any) => ({
+            id: topic.id,
             name: topic.title,
-            slug: topic.title,
-            completedLevelCount: `${topic.levels.length.toString()}/${topic.levels.length.toString()} level diselesaikan`, // Completed level count
+            slug: slug(`${topic.title} ${topic.id}`),
+            levels: topic.levels.map((level: any) => ({
+                id: level.id,
+                name: level.name,
+                slug: slug(`${level.name} ${level.id}`),
+                subtitle: level.shortDescription
+            })),
             image: topic.image,
+            bannerImage: topic.bannerImage
         }));
 
         // Return the transformed data to the frontend
