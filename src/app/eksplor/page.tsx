@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { RoadmapTopic } from '@/interfaces/RoadmapTopic';
 import { UserInformation } from '@/interfaces/UserInformation';
 import { Level } from '@/interfaces/Level';
+import { Badge } from '@/interfaces/Badge';
 
 interface RoadmapTopicItemConfig {
     [position: number]: {
@@ -80,10 +81,11 @@ export default function Explore() {
             lastMiniGameID: 1,
             lastMainGameQuizID: 1,
             completeAt: null,
-        }
+        },
     });
 
     const [roadmapTopics, setRoadmapTopics] = useState<Array<RoadmapTopic>>([]);
+    const [badges, setBadges] = useState<Array<Badge>>([]);
     const [error, setError] = useState('');
     const router = useRouter();
 
@@ -116,7 +118,7 @@ export default function Explore() {
                 router.push('/masuk'); // Redirect to login page if no token is found
             }
         }
-    }
+    };
 
     const fetchUserInformation = async () => {
         const token = localStorage.getItem('jwt');
@@ -129,6 +131,7 @@ export default function Explore() {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${token}`,
                     },
+                    cache: 'no-store', // Ensures no caching
                 });
 
                 if (response.ok) {
@@ -145,13 +148,15 @@ export default function Explore() {
                 console.error('Error fetching user data:', error);
             }
         }
-    }
+    };
 
     const getCompletedLevelCountPerTopic = (levels: Array<Level>): number => {
-        if(userInfo) {
-            const previousCompletedLevels = levels.filter(level => level.id <= userInfo.userProgress.lastLevelID);
+        if (userInfo) {
+            const previousCompletedLevels = levels.filter(
+                (level) => level.id <= userInfo.userProgress.lastLevelID,
+            );
 
-            if(!userInfo.userProgress.completeAt) {
+            if (!userInfo.userProgress.completeAt) {
                 previousCompletedLevels.pop();
             }
 
@@ -159,7 +164,33 @@ export default function Explore() {
         }
 
         return 0;
-    }
+    };
+
+    const fetchBadgeCount = async () => {
+        const token = localStorage.getItem('jwt'); // Retrieve token from localStorage
+        if (token) {
+            try {
+                const response = await fetch('/api/badge', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the token in the request
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch Badges');
+                }
+
+                const data = await response.json();
+                setBadges(data); // Assuming your response returns the roadmap topics
+            } catch (err) {
+                setError('Error fetching data');
+                console.error(err);
+            }
+        } else {
+            setBadges([]);
+        }
+    };
 
     // Fetching data on component mount
     useEffect(() => {
@@ -167,9 +198,8 @@ export default function Explore() {
 
         fetchData();
         fetchUserInformation();
+        fetchBadgeCount();
     }, []);
-
-
 
     return (
         <>
@@ -227,7 +257,8 @@ export default function Explore() {
                                     data-aos-delay="300"
                                 >
                                     <span className="text-sm md:text-base font-semibold ">
-                                        {userInfo.badge.length}/16 badge
+                                        {userInfo.badge.length}/{badges.length}{' '}
+                                        badge
                                     </span>
                                     <Medal className="fill-dark-slate" />
                                 </div>
@@ -237,7 +268,13 @@ export default function Explore() {
                                     data-aos-delay="450"
                                 >
                                     <span className="text-sm md:text-base font-semibold ">
-                                        0/{roadmapTopics.reduce((prev, topic) => prev + topic.levels.length, 0)} level
+                                        0/
+                                        {roadmapTopics.reduce(
+                                            (prev, topic) =>
+                                                prev + topic.levels.length,
+                                            0,
+                                        )}{' '}
+                                        level
                                     </span>
                                     <Game className="fill-dark-slate" />
                                 </div>
@@ -258,9 +295,10 @@ export default function Explore() {
 
                             return (
                                 <div
-                                    className={`${roadmapTopicItemConfig[index % 3]
-                                        .justifyContent
-                                        } flex relative`}
+                                    className={`${
+                                        roadmapTopicItemConfig[index % 3]
+                                            .justifyContent
+                                    } flex relative`}
                                     key={topic.name}
                                 >
                                     {index % 3 == 0 && index > 0 && (
@@ -268,8 +306,20 @@ export default function Explore() {
                                     )}
 
                                     <Link
-                                        href={`/eksplor/${topic.id > userInfo.userProgress.lastRoadmapTopicID ? '' : topic.slug}`}
-                                        className={`z-20 relative ${topic.id > userInfo.userProgress.lastRoadmapTopicID ? 'cursor-default' : 'cursor-pointer'}`}
+                                        href={`/eksplor/${
+                                            topic.id >
+                                            userInfo.userProgress
+                                                .lastRoadmapTopicID
+                                                ? ''
+                                                : topic.slug
+                                        }`}
+                                        className={`z-20 relative ${
+                                            topic.id >
+                                            userInfo.userProgress
+                                                .lastRoadmapTopicID
+                                                ? 'cursor-default'
+                                                : 'cursor-pointer'
+                                        }`}
                                         data-aos="zoom-in-up"
                                     >
                                         <div className="bg-soft-cream w-fit h-fit">
@@ -277,22 +327,33 @@ export default function Explore() {
                                                 src={topic.image}
                                                 width={1000}
                                                 height={1000}
-                                                className={`h-28 md:h-36 w-fit ${topic.id > userInfo.userProgress.lastRoadmapTopicID ? 'grayscale' : ''}`}
+                                                className={`h-28 md:h-36 w-fit ${
+                                                    topic.id >
+                                                    userInfo.userProgress
+                                                        .lastRoadmapTopicID
+                                                        ? 'grayscale'
+                                                        : ''
+                                                }`}
                                                 alt={topic.name}
                                             />
                                         </div>
 
                                         <div
-                                            className={`absolute w-max ps-1 pe-8 md:pe-0 top-0 ${index % 3 == 2
-                                                ? 'text-right top-full mt-4 right-24'
-                                                : 'left-full'
-                                                }`}
+                                            className={`absolute w-max ps-1 pe-8 md:pe-0 top-0 ${
+                                                index % 3 == 2
+                                                    ? 'text-right top-full mt-4 right-24'
+                                                    : 'left-full'
+                                            }`}
                                         >
                                             <h4 className="text-base md:text-xl font-bold ">
                                                 {topic.name}
                                             </h4>
                                             <p className="text-sm md:text-base mt-1">
-                                                {getCompletedLevelCountPerTopic(topic.levels)}/{topic.levels.length} level diselesaikan
+                                                {getCompletedLevelCountPerTopic(
+                                                    topic.levels,
+                                                )}
+                                                /{topic.levels.length} level
+                                                diselesaikan
                                             </p>
                                         </div>
                                     </Link>
