@@ -33,7 +33,7 @@ export function ShortAnswer({ question, answer, image, point, onComplete }: Shor
             return;
         }
 
-        if (playerAnswer.toLowerCase() !== answer.toLowerCase()) {
+        if (answer.split('|').map(text => text.trim().toLowerCase()).includes(playerAnswer.toLowerCase())) {
             setIsWrong(true);
             return;
         }
@@ -52,7 +52,9 @@ export function ShortAnswer({ question, answer, image, point, onComplete }: Shor
                 <p className="text-sm text-white font-medium">{point}</p>
             </span>
 
-            <Image src={image} alt="Image" width={720} height={720} className="md:flex-none size-10/12 md:size-48 aspect-square rounded-md" />
+            {image && image !== '' && (
+                <Image src={image} alt="Image" width={720} height={720} className="md:flex-none size-10/12 md:size-48 aspect-square rounded-md" />
+            )}
             <form className="flex w-full md:pe-24 items-center md:items-start flex-col gap-y-4" onSubmit={handleSubmit}>
                 <h5 className="text-white font-bold text-base text-center md:text-lg md:text-start">{question}</h5>
                 <div className={`w-full ${isWrong ? 'animate-shake' : ''}`} onAnimationEnd={() => setIsWrong(false)}>

@@ -10,7 +10,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
 import { TextField } from '@/components/core/TextField';
-import { Envelope, Lock } from '@/components/icons';
+import { Envelope, Lock, User } from '@/components/icons';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -21,7 +21,9 @@ export default function Register() {
     const [isLoading, setIsLoading] = useState(false);
 
     const [registerForm, setRegisterForm] = useState({
+        name: '',
         email: '',
+        gender: '',
         password: '',
         confirmPassword: '',
     });
@@ -41,13 +43,13 @@ export default function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if(isLoading) {
+        if (isLoading) {
             return;
         }
 
         setIsLoading(true);
 
-        if(registerForm.confirmPassword !== registerForm.password) {
+        if (registerForm.confirmPassword !== registerForm.password) {
             setErrorDialog(prev => ({
                 ...prev,
                 visible: true,
@@ -64,18 +66,13 @@ export default function Register() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                name: titleCase(registerForm.email.split('@')[0]),
-                email: registerForm.email,
-                password: registerForm.password,
-                gender: ''
-            })
+            body: JSON.stringify(registerForm)
         });
         const responseBody = await response.json();
 
         setIsLoading(false);
 
-        if(!response.ok) {
+        if (!response.ok) {
             setErrorDialog(prev => ({
                 ...prev,
                 visible: true,
@@ -91,7 +88,7 @@ export default function Register() {
     useEffect(() => {
         AOS.init();
     });
-    
+
     return (
         <>
             <Navbar />
@@ -106,6 +103,17 @@ export default function Register() {
                         </h3>
                     </div>
                     <div className="flex flex-col gap-y-4 lg:gap-y-6">
+                        <div>
+                            <TextField
+                                name="name"
+                                type="text"
+                                icon={<User className="fill-dark-slate" />}
+                                placeholder="John Doe"
+                                value={registerForm.name}
+                                onChange={handleInput}
+                            />
+                            <p className='text-xs md:text-sm text-gray-400 mt-2'>Kamu boleh menggunakan nama yang lain untuk identitasmu yaa</p>
+                        </div>
                         <TextField
                             name="email"
                             type="email"
@@ -165,7 +173,7 @@ export default function Register() {
             <Dialog open={errorDialog.visible} type="error_message" message={errorDialog.message} handleClose={() => setErrorDialog(prev => ({
                 ...prev,
                 visible: false
-            }))}/>
+            }))} />
         </>
     );
 }

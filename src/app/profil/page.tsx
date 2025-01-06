@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -36,9 +36,12 @@ export default function Profil() {
     score: 0,
     badge: [],
     userProgress: {
-        completeAt: '',
-        lastMainGameQuizID: 0,
-        lastMiniGameID: 0,
+        lastRoadmapTopicID: 1,
+        lastLevelID: 1,
+        lastLevelModuleID: 1,
+        lastMiniGameID: 1,
+        lastMainGameQuizID: 1,
+        completeAt: null
     }
   });
 
@@ -53,7 +56,7 @@ export default function Profil() {
 
   const handleLogout = () => {
     localStorage.removeItem('jwt');
-    router.push('/');
+    router.replace('/');
   }
 
   const handleEditProfile = () => {
@@ -97,10 +100,11 @@ export default function Profil() {
           }
 
           setUserInfo(userInfo);
-        } else {
-          console.error('Failed to fetch user data');
         }
       } catch (error) {
+        localStorage.removeItem('jwt');
+        router.replace('/');
+        
         console.error('Error fetching user data:', error);
       }
     }
@@ -122,7 +126,7 @@ export default function Profil() {
             </Link>
             <div className="col-span-12">
               <h2
-                className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] font-bold bg-gradient-to-r from-blue to-pink bg-clip-text text-transparent h-16 w-fit"
+                className="text-4xl leading-[1.1] lg:text-5xl lg:leading-[1.1] font-bold bg-gradient-to-r from-blue to-pink bg-clip-text text-transparent w-fit"
                 data-aos="fade"
               >
                 Pengaturan Akun
@@ -138,38 +142,36 @@ export default function Profil() {
                     data-aos="fade"
                   >
                     <div>
-                      <p className="font-bold text-dark-slate text-2xl">
+                      <p className="font-bold text-dark-slate text-xl md:text-2xl">
                         Detail Profil
                       </p>
                     </div>
 
-                    <div className="flex">
-                      <div className="flex items-center justify-center gap-4">
-                        <Image
-                          src={userInfo && userInfo.profileImage ? userInfo.profileImage : '/assets/hello.png'}
-                          width={100}
-                          height={510}
-                          alt="foto profil"
-                          className="rounded-full"
-                        />
-                        <div className="flex flex-col gap-2">
-                          <h2 className="font-bold text-dark-slate text-4xl">
-                            { userInfo?.name }
-                          </h2>
-                          <button
-                            className="bg-blue py-2 text-white rounded-md hover:bg-blue-hovered px-6"
-                            onClick={handleEditProfile}
-                          >
-                            {edit
-                              ? 'Save Profil'
-                              : 'Edit Profil'}
-                          </button>
-                        </div>
+                    <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4">
+                      <Image
+                        src={userInfo && userInfo.profileImage ? userInfo.profileImage : '/assets/hello.png'}
+                        width={500}
+                        height={500}
+                        alt="foto profil"
+                        className="rounded-full size-24"
+                      />
+                      <div className="flex flex-col gap-2">
+                        <h2 className="font-bold text-dark-slate text-2xl md:text-3xl">
+                          { userInfo?.name }
+                        </h2>
+                        <button
+                          className="bg-blue py-2 text-white rounded-md hover:bg-blue-hovered px-6"
+                          onClick={handleEditProfile}
+                        >
+                          {edit
+                            ? 'Save Profil'
+                            : 'Edit Profil'}
+                        </button>
                       </div>
                     </div>
 
-                    <div className="flex gap-4">
-                      <div className="flex flex-col w-[50%]">
+                    <div className="flex flex-col text-sm md:text-base md:flex-row gap-4">
+                      <div className="flex flex-col w-full">
                         <p className="font-bold">
                           Email
                         </p>
@@ -185,7 +187,7 @@ export default function Profil() {
                             }))}
                         />
                       </div>
-                      <div className="flex flex-col w-[50%]">
+                      <div className="flex flex-col w-full">
                         <p className="font-bold">
                           Gender
                         </p>
@@ -218,11 +220,11 @@ export default function Profil() {
                       data-aos="fade"
                       data-aos-anchor-placement="top-bottom"
                     >
-                      <h2 className="font-bold text-dark-slate text-3xl">
+                      <h2 className="font-bold text-dark-slate text-xl md:text-2xl">
                         Badge
                       </h2>
 
-                      <div className='min-h-64 grid grid-cols-7 gap-2'>
+                      <div className='min-h-64 grid grid-cols-3 md:grid-cols-7 gap-2'>
                         {userInfo.badge.map(badge => (
                           <Image src={badge.image} alt={badge.name} key={badge.id} width={800} height={800} className='w-full h-24 aspect-square object-contain drop-shadow-sm cursor-pointer' onClick={() => handleBadgeClick(badge.name, badge.image, badge.name)}/>
                         ))}

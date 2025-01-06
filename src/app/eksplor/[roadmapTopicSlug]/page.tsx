@@ -15,7 +15,6 @@ import { Navbar } from "@/components/Navbar";
 import { Level as ILevel } from "@/interfaces/Level";
 import { RoadmapTopic } from "@/interfaces/RoadmapTopic";
 import slug from "slug";
-import { ClientPageRoot } from "next/dist/client/components/client-page";
 
 interface ExploreDetailProps {
     params: {
@@ -25,30 +24,15 @@ interface ExploreDetailProps {
 
 export default function ExploreDetail({ params }: ExploreDetailProps) {
     const [roadmapTopic, setRoadmapTopic] = useState<RoadmapTopic>({
+        id: 1,
         name: '',
         slug: '',
         image: '',
-        completedLevelCount: '',
+        levels: [],
         bannerImage: ''
     });
 
-    const [levels, setLevels] = useState<Array<ILevel>>([
-        {
-            name: 'Organ Reproduksi',
-            slug: 'organ-reproduksi',
-            subtitle: 'Short description'
-        },
-        {
-            name: 'Cara "Menjaga" Diri',
-            slug: 'cara-menjaga-diri',
-            subtitle: 'Short description'
-        },
-        {
-            name: 'Kesehatan Kulit',
-            slug: 'kesehatan-kulit',
-            subtitle: 'Short description'
-        },
-    ]);
+    const [levels, setLevels] = useState<Array<ILevel>>([]);
 
     const fetchData = async () => {
         const token = localStorage.getItem('jwt');
@@ -65,23 +49,25 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
             const responseBody = await response.json();
 
             setRoadmapTopic({
+                id: responseBody.data.id,
                 name: responseBody.data.title,
                 slug: slug(`${responseBody.data.title} ${responseBody.data.id}`),
                 image: responseBody.data.image,
                 bannerImage: responseBody.data.bannerImage,
-                completedLevelCount: `${responseBody.data.levels.length.toString()}/${responseBody.data.levels.length.toString()} level diselesaikan`
+                levels: responseBody.data.levels,
             });
 
             setLevels([
                 ...responseBody.data.levels.map((level: any): ILevel => ({
+                    id: level.id,
                     name: level.name,
                     slug: slug(`${level.name} ${level.id}`),
-                    // subtitle: `Level ${responseBody.data.id}-${level.id}`,
                     subtitle: `${level.shortDescription}`
                 })),
                 {
+                    id: 0,
                     name: 'Boss',
-                    slug: `boss-${responseBody.data.id}`,
+                    slug: `boss`,
                     subtitle: 'Level Boss'
                 }
             ]);
@@ -110,7 +96,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
             <Section className="bg-soft-cream">
                 <div className="col-span-12 flex flex-col items-center pb-20">
                     {levels.map((level, index) => (
-                        <span className="w-full flex flex-col items-center" key={index}>
+                        <span className="w-full flex flex-col items-center" key={level.id}>
                             <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={false} />
 
                             {index < levels.length - 1 && (

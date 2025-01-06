@@ -74,7 +74,7 @@ const Dialog = ({
                 onClick={() => handleClose()}
             >
                 <div className="bg-gradient-to-r from-[#435BC0] to-[#F6666F] rounded-md p-2">
-                    <div className="min-w-80 min-h-80 bg-white rounded-md flex flex-col justify-center items-center gap-4 w-full h-full p-0">
+                    <div className="w-80 h-80 bg-white rounded-md flex flex-col justify-center items-center gap-4 p-0">
                         <Image
                             src={src || ''}
                             width={800}

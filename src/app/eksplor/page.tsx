@@ -141,10 +141,11 @@ export default function Explore() {
                     }
 
                     setUserInfo(userInfo);
-                } else {
-                    console.error('Failed to fetch user data');
                 }
             } catch (error) {
+                localStorage.removeItem('jwt');
+                router.replace('/');
+                
                 console.error('Error fetching user data:', error);
             }
         }
@@ -295,11 +296,10 @@ export default function Explore() {
 
                             return (
                                 <div
-                                    className={`${
-                                        roadmapTopicItemConfig[index % 3]
-                                            .justifyContent
-                                    } flex relative`}
-                                    key={topic.name}
+                                    className={`${roadmapTopicItemConfig[index % 3]
+                                        .justifyContent
+                                        } flex relative`}
+                                    key={topic.id}
                                 >
                                     {index % 3 == 0 && index > 0 && (
                                         <div className="absolute top-[calc(50%-1.5px)] -translate-y-full left-16 border-[3px] border-r-0 border-b-0 z-10 border-dashed border-dark-slate rounded-tl-3xl w-[calc(50%-4rem)] h-[calc(11.5rem+1.5px)] md:h-[calc(12.5rem+1.5px)]"></div>
@@ -313,7 +313,7 @@ export default function Explore() {
                                                 ? ''
                                                 : topic.slug
                                         }`}
-                                        className={`z-20 relative ${
+                                        className={`z-20 relative group ${
                                             topic.id >
                                             userInfo.userProgress
                                                 .lastRoadmapTopicID
@@ -327,7 +327,7 @@ export default function Explore() {
                                                 src={topic.image}
                                                 width={1000}
                                                 height={1000}
-                                                className={`h-28 md:h-36 w-fit ${
+                                                className={`h-28 md:h-36 w-fit group-hover:scale-[1.03] group-hover:drop-shadow-sm ${
                                                     topic.id >
                                                     userInfo.userProgress
                                                         .lastRoadmapTopicID

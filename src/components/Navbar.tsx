@@ -3,12 +3,14 @@
 import Link from 'next/link';
 import { Container } from './core/Container';
 import { Menu, Close } from './icons';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { UserInformation } from '@/interfaces/UserInformation';
 
 export function Navbar() {
+    const router = useRouter();
+
     const pathName = usePathname();
     const [data, setData] = useState<UserInformation>();
     const [session, setSession] = useState<string | null>('');
@@ -26,15 +28,16 @@ export function Navbar() {
                     },
                 });
 
-                if (response.ok) {
-                    const userInfo: UserInformation = await response.json();
-                    // console.log(`last main game quiz id: ${userInfo.userProgress.lastMainGameQuizID}`);
-                    setData(userInfo);
-                } else {
-                    console.error('Failed to fetch user data');
+                if (!response.ok) {
+                    throw new Error("Server Error");
                 }
+
+                const userInfo: UserInformation = await response.json();
+                setData(userInfo);
             } catch (error) {
-                console.error('Error fetching user data:', error);
+                console.log('Error');
+                localStorage.removeItem('jwt');
+                router.replace('/');
             }
         }
     };
@@ -111,7 +114,7 @@ export function Navbar() {
                                     }
                                     width={40}
                                     height={40}
-                                    className="rounded-full"
+                                    className="rounded-full size-9 object-cover"
                                     alt="profile picture"
                                 />
                             </Link>

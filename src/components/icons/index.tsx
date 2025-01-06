@@ -10,6 +10,7 @@ import { Lock } from "./Lock";
 import { Medal } from "./Medal";
 import { Menu } from "./Menu";
 import { Roadmap } from "./Roadmap";
+import { User } from "./User";
 
 export {
     Article,
@@ -23,5 +24,6 @@ export {
     Lock,
     Medal,
     Menu,
-    Roadmap
+    Roadmap,
+    User
 }
