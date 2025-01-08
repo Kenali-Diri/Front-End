@@ -14,6 +14,7 @@ import { TConductorInstance } from "react-canvas-confetti/dist/types";
 import Dialog from "@/components/Dialog";
 import { useRouter } from "next/navigation";
 import { SERVER_URL } from "@/configs/app";
+import { UserInformation } from "@/interfaces/UserInformation";
 
 interface BossProps {
     params: {
@@ -36,6 +37,23 @@ interface MaingameQuizOptionDto {
 
 export default function BossLevel({ params }: BossProps) {
     const router = useRouter();
+
+    const [userInfo, setUserInfo] = useState<UserInformation>({
+        email: '',
+        gender: '',
+        id: 1,
+        name: '',
+        profileImage: '',
+        score: 0,
+        badge: [],
+        userProgress: {
+            lastRoadmapTopicID: 1,
+            lastLevelModuleID: 1,
+            lastLevelID: 1,
+            lastMiniGameID: 1,
+            completeAt: null,
+        },
+    });
 
     const [confettiConductor, setConfettiConductor] = useState<TConductorInstance>();
     const initConfetti = ({ conductor }: { conductor: TConductorInstance }) => {
@@ -67,7 +85,42 @@ export default function BossLevel({ params }: BossProps) {
         }
     }
 
-    const handleNextQuestion = () => {
+    const fetchUserInformation = async () => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            try {
+                // Send JWT to API route to fetch user data
+                const response = await fetch('/api/userInformation', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    cache: 'no-store', // Ensures no caching
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch roadmap topics');
+                }
+
+                const userInfo: UserInformation = await response.json();
+                if (userInfo.gender === '') {
+                    userInfo.gender = 'Male';
+                }
+
+                setUserInfo(userInfo);
+            } catch (error) {
+                localStorage.removeItem('jwt');
+                router.replace('/');
+                
+                console.error('Error fetching user data:', error);
+            }
+        }
+    };
+
+    const handleNextQuestion = async () => {
+        const token = localStorage.getItem('jwt');
+
         if(selectedOption !== questions[currentQuizNumber  - 1].answer) {
             setIsWrong(true);
             return;
@@ -77,6 +130,15 @@ export default function BossLevel({ params }: BossProps) {
 
         if(currentQuizNumber + 1 > questions.length) {
             // Submit
+            const response = await fetch(`/api/userProgress/roadmapTopic/${userInfo.id}?roadmapTopicId=${params.roadmapTopicSlug.split('-').pop()}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const responseBody = await response.json();
+            
             setIsBadgeUnlocked(true);
         } else {
             // Next Question
@@ -93,6 +155,7 @@ export default function BossLevel({ params }: BossProps) {
 
     useEffect(() => {
         fetchData();
+        fetchUserInformation();
     }, []);
 
     return (

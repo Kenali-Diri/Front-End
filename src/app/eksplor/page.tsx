@@ -152,10 +152,16 @@ export default function Explore() {
         }
     };
 
-    const getCompletedLevelCountPerTopic = (levels: Array<Level>): number => {
+    const getCompletedLevelCountPerTopic = (roadmapTopic: RoadmapTopic): number => {
         if (userInfo) {
-            const previousCompletedLevels = levels.filter(level => level.id < userInfo.userProgress.lastLevelID);
-            return previousCompletedLevels.length;
+            const previousCompletedLevels = roadmapTopic.levels.filter(level => level.id < userInfo.userProgress.lastLevelID);
+
+            let isBossCompleted = false;
+            if(roadmapTopic.id < userInfo.userProgress.lastRoadmapTopicID) {
+                isBossCompleted = true;
+            }
+
+            return previousCompletedLevels.length + (isBossCompleted ? 1 : 0);
         }
 
         return 0;
@@ -263,13 +269,12 @@ export default function Explore() {
                                     data-aos-delay="450"
                                 >
                                     <span className="text-sm md:text-base font-semibold ">
-                                        0/
+                                        {roadmapTopics.reduce((prev, topic) => prev + getCompletedLevelCountPerTopic(topic), 0)}/
                                         {roadmapTopics.reduce(
                                             (prev, topic) =>
                                                 prev + topic.levels.length + 1,
                                             0,
-                                        )}{' '}
-                                        level
+                                        )}{' '}level
                                     </span>
                                     <Game className="fill-dark-slate" />
                                 </div>
@@ -344,7 +349,7 @@ export default function Explore() {
                                             </h4>
                                             <p className="text-sm md:text-base mt-1">
                                                 {topic.levels.length > 0 && getCompletedLevelCountPerTopic(
-                                                    topic.levels
+                                                    topic
                                                 )}
                                                 /{topic.levels.length + 1} level
                                                 diselesaikan
