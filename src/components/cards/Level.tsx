@@ -1,18 +1,19 @@
 'use client';
 
 import Link from "next/link";
-import { Game, Medal, Diamond, Crown } from "../icons";
+import { Game, Medal, Diamond, Crown, Lock } from "../icons";
 import { Level as ILevel } from "@/interfaces/Level";
 
 type ColorVariant = 'blue' | 'pink' | 'dark-slate';
 type LevelType = 'normal' | 'boss';
 
 interface LevelProps {
-    roadmapTopicSlug: string,
-    level: ILevel,
-    variant?: ColorVariant,
-    complete?: boolean,
-    type: LevelType
+    roadmapTopicSlug: string;
+    level: ILevel;
+    variant?: ColorVariant;
+    complete?: boolean;
+    disabled: boolean;
+    type: LevelType;
 }
 
 const iconColor: { [key in ColorVariant]: string } = {
@@ -39,13 +40,21 @@ const borderColor: { [key in ColorVariant]: string } = {
     'dark-slate': 'border-dark-slate'
 }
 
-export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = false, type = 'normal' }: LevelProps) {
+export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = false, type = 'normal', disabled = false }: LevelProps) {
     return (
-        <Link href={`${roadmapTopicSlug}/${level.slug}`} className="bg-white rounded-2xl sm:rounded-full shadow-md flex flex-col sm:flex-row sm:items-center p-6 sm:p-8 gap-y-3 sm:gap-x-6 w-full sm:w-[28rem] transition-all duration-300" key={level.name} data-aos='fade-up'>
-            {type === 'boss' ? (
-                <Crown className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+        <Link href={disabled ? `` : `${roadmapTopicSlug}/${level.slug}`} className={`rounded-2xl sm:rounded-full shadow-md flex flex-col sm:flex-row sm:items-center p-6 sm:p-8 gap-y-3 sm:gap-x-6 w-full sm:w-[28rem] transition-all duration-300 ${disabled ? 'grayscale bg-gray-100 cursor-default' : 'bg-white'}`} key={level.name} data-aos='fade-up'>
+            {disabled ? (
+                <>
+                    <Lock className={`flex-none fill-gray-500`} size="size-6 sm:size-8"/>
+                </>
             ) : (
-                <Game className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+                <>
+                    {type === 'boss' ? (
+                        <Crown className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+                    ) : (
+                        <Game className={`flex-none ${iconColor[variant]}`} size="size-6 sm:size-8" />
+                    )}
+                </>
             )}
             <div className="grow">
                 <h4 className={`${textColor[variant]} font-bold text-base sm:text-lg`}>{level.name}</h4>

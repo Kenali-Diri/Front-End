@@ -47,6 +47,7 @@ interface LevelModuleMaterialDto {
     type: string;
     assetURL?: string;
     material?: string;
+    miniGameID: number;
     miniGameQuiz: MiniGameQuizDto;
     miniGameStack: MiniGameStackDto;
     miniGameEssay: MiniGameEssayDto;
@@ -136,10 +137,12 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                 'Authorization': `Bearer ${token}`
             }
         });
+
+        await fetchUserInformation();
     }
 
     const handleFinishLevel = () => {
-        router.back();
+        router.push(`/eksplor/${params.roadmapTopicSlug}`);
     }
 
     const fetchData = async () => {
@@ -188,7 +191,7 @@ export default function LevelDetail({ params }: LevelDetailProps) {
             } catch (error) {
                 localStorage.removeItem('jwt');
                 router.replace('/');
-                
+
                 console.error('Error fetching user data:', error);
             }
         }
@@ -273,15 +276,15 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                                         } else if (material.type.startsWith('mini-game')) {
                                             if (material.type === 'mini-game-quiz') {
                                                 return (
-                                                    <Quiz question={material.miniGameQuiz.question} answer={material.miniGameQuiz.answer} point={material.miniGameQuiz.score} onComplete={() => handleGameCompletion(material.miniGameQuiz.id)} options={material.miniGameQuiz.options.map(option => option.option)} key={material.material} isCompletedByUser={material.miniGameQuiz.id < userInfo.userProgress.lastMiniGameID}/>
+                                                    <Quiz question={material.miniGameQuiz.question} answer={material.miniGameQuiz.answer} point={material.miniGameQuiz.score} onComplete={() => handleGameCompletion(material.miniGameQuiz.id)} options={material.miniGameQuiz.options.map(option => option.option)} key={material.material} isCompletedByUser={material.miniGameQuiz.id < userInfo.userProgress.lastMiniGameID} />
                                                 )
                                             } else if (material.type === 'mini-game-stack') {
                                                 return (
-                                                    <ScrambledWord question={material.miniGameStack.question} answer={material.miniGameStack.answer} image={material.miniGameStack.image ? material.miniGameStack.image : ''} point={material.miniGameStack.score} onComplete={() => handleGameCompletion(material.miniGameStack.id)} scrambledWord={material.miniGameStack.randomizedAnswer} key={material.material} isCompletedByUser={material.miniGameStack.id < userInfo.userProgress.lastMiniGameID}/>
+                                                    <ScrambledWord question={material.miniGameStack.question} answer={material.miniGameStack.answer} image={material.miniGameStack.image ? material.miniGameStack.image : ''} point={material.miniGameStack.score} onComplete={() => handleGameCompletion(material.miniGameStack.id)} scrambledWord={material.miniGameStack.randomizedAnswer} key={material.material} isCompletedByUser={material.miniGameStack.id < userInfo.userProgress.lastMiniGameID} />
                                                 )
                                             } else if (material.type === 'mini-game-essay') {
                                                 return (
-                                                    <ShortAnswer question={material.miniGameEssay.question} answer={material.miniGameEssay.answer} image={material.miniGameEssay.image ? material.miniGameEssay.image : ''} point={material.miniGameEssay.score} onComplete={() => handleGameCompletion(material.miniGameEssay.id)} key={material.material} isCompletedByUser={material.miniGameEssay.id < userInfo.userProgress.lastMiniGameID}/>
+                                                    <ShortAnswer question={material.miniGameEssay.question} answer={material.miniGameEssay.answer} image={material.miniGameEssay.image ? material.miniGameEssay.image : ''} point={material.miniGameEssay.score} onComplete={() => handleGameCompletion(material.miniGameEssay.id)} key={material.material} isCompletedByUser={material.miniGameEssay.id < userInfo.userProgress.lastMiniGameID} />
                                                 )
                                             }
                                         }
@@ -348,9 +351,11 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                         </div>
                     ))}
 
-                    <button className="bg-blue hover:bg-blue-hovered text-white text-sm py-4 px-8 font-bold rounded-md mt-6" onClick={handleFinishLevel}>
-                        Lanjut
-                    </button>
+                    {userInfo && level.modules.length > 0 && userInfo.userProgress.lastMiniGameID > level.modules.flatMap(x => x.materials.filter(y => y.type.startsWith('mini-game'))).pop()!.miniGameID && (
+                        <button className="bg-blue hover:bg-blue-hovered text-white text-sm py-4 px-8 font-bold rounded-md mt-6" onClick={handleFinishLevel}>
+                            Lanjut
+                        </button>
+                    )}
                 </div>
             </Section>
             <Footer />

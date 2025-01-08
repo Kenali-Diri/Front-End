@@ -146,6 +146,22 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
         return false;
     }
 
+    const getLevelDisabledStatus = (level: ILevel): boolean => {
+        if(level.name === 'Boss') {
+            const lastLevelInRoadmap = levels.filter(level => level.name !== 'Boss').pop()!;
+
+            if(userInfo.userProgress.lastLevelID <= lastLevelInRoadmap.id) {
+                return true;
+            }
+        } else {
+            if(level.id > userInfo.userProgress.lastLevelID) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     useEffect(() => {
         AOS.init();
         fetchData();
@@ -170,7 +186,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 <div className="col-span-12 flex flex-col items-center pb-20">
                     {levels.map((level, index) => (
                         <span className="w-full flex flex-col items-center" key={level.id}>
-                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={userInfo ? getLevelCompleteStatus(level) : false} />
+                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={userInfo ? getLevelCompleteStatus(level) : false} disabled={userInfo ? getLevelDisabledStatus(level) : false} />
 
                             {index < levels.length - 1 && (
                                 <div className="border-dashed border-l-2 border-dark-slate h-12" data-aos='fade-up'></div>

@@ -183,23 +183,16 @@ export default function Profil() {
                                         </div>
 
                     <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4">
-                      <div className='size-24 rounded-full relative group'>
-                        <Image
-                          src={userInfo && userInfo.profileImage ? userInfo.profileImage : '/assets/hello.png'}
-                          width={500}
-                          height={500}
-                          alt="foto profil"
-                          className="rounded-full size-24"
-                        />
-
-                        <label className='size-24 hidden group-hover:flex rounded-full absolute top-0 left-0 bg-black/50 items-center justify-center text-white font-bold z-10' htmlFor='input-profile-image'>
-                          Ganti
-                        </label>
-                        <input type="file" className='hidden' id='input-profile-image' name='input-profile-image' onChange={handleEditProfileImage} />
-                      </div>
+                      <Image
+                        src={userInfo && userInfo.profileImage ? userInfo.profileImage : '/assets/hello.png'}
+                        width={500}
+                        height={500}
+                        alt="foto profil"
+                        className="rounded-full size-24"
+                      />
                       <div className="flex flex-col gap-2">
                         <h2 className="font-bold text-dark-slate text-2xl md:text-3xl">
-                          {userInfo?.name}
+                          { userInfo?.name }
                         </h2>
                         <button
                           className="bg-blue py-2 text-white rounded-md hover:bg-blue-hovered px-6"
@@ -222,7 +215,7 @@ export default function Profil() {
                           value={userInfo?.email}
                           className={`border border-gray-300 rounded p-2 ${!edit ? 'opacity-40' : 'opacity-100'}`}
                           disabled={!edit}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => 
                             setUserInfo(prev => ({
                               ...prev,
                               email: e.target.value
@@ -268,7 +261,7 @@ export default function Profil() {
 
                       <div className='min-h-64 grid grid-cols-3 md:grid-cols-7 gap-2'>
                         {userInfo.badge.map(badge => (
-                          <Image src={badge.image} alt={badge.name} key={badge.id} width={800} height={800} className='w-full h-24 aspect-square object-contain drop-shadow-sm cursor-pointer' onClick={() => handleBadgeClick(badge.name, badge.image, badge.name)} />
+                          <Image src={badge.image} alt={badge.name} key={badge.id} width={800} height={800} className='w-full h-24 aspect-square object-contain drop-shadow-sm cursor-pointer' onClick={() => handleBadgeClick(badge.name, badge.image, badge.name)}/>
                         ))}
                       </div>
 
@@ -325,7 +318,7 @@ export default function Profil() {
                                         />
                                     </div>
 
-                  {/* <div
+                  <div
                     className="bg-white px-6 py-8 rounded-md flex flex-col gap-8"
                     data-aos="fade"
                     data-aos-anchor-placement="top-bottom"
@@ -344,7 +337,7 @@ export default function Profil() {
                     <button className="p-2 bg-blue text-white rounded-md hover:bg-blue-hovered">
                       Ganti Password
                     </button>
-                  </div> */}
+                  </div>
 
                                     <button
                                         className="text-white text-center bg-pink rounded-md p-2 md:hidden"
