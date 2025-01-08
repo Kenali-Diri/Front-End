@@ -13,6 +13,7 @@ import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
 import Dialog from "@/components/Dialog";
 import { useRouter } from "next/navigation";
+import { SERVER_URL } from "@/configs/app";
 
 interface BossProps {
     params: {
@@ -139,7 +140,7 @@ export default function BossLevel({ params }: BossProps) {
             </Section>
 
             <Fireworks onInit={initConfetti} className="pointer-events-none fixed size-full top-0 left-0 z-20"/>
-            <Dialog type="badge" open={isBadgeUnlocked} handleClose={handleCloseBoss} src=""/>
+            <Dialog type="badge" open={isBadgeUnlocked} handleClose={handleCloseBoss} src={SERVER_URL + '/Images/badge-ternyata-ini-penting-ya.png'} badgeContent="Ternyata ini penting ya"/>
             <Footer />
         </>
     );

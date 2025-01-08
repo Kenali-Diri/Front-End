@@ -1,5 +1,7 @@
+'use client';
+
 import Image from "next/image"
-import { FormEvent, useState } from "react"
+import { FormEvent, useEffect, useState } from "react"
 
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
@@ -14,7 +16,7 @@ export interface ShortAnswerProps extends Game {
     image: string
 }
 
-export function ShortAnswer({ question, answer, image, point, onComplete }: ShortAnswerProps) {
+export function ShortAnswer({ question, answer, image, point, isCompletedByUser, onComplete }: ShortAnswerProps) {
     const [playerAnswer, setPlayerAnswer] = useState<string>('');
     const [isWrong, setIsWrong] = useState<boolean>(false);
 
@@ -33,7 +35,7 @@ export function ShortAnswer({ question, answer, image, point, onComplete }: Shor
             return;
         }
 
-        if (answer.split('|').map(text => text.trim().toLowerCase()).includes(playerAnswer.toLowerCase())) {
+        if (!answer.split('|').map(text => text.trim().toLowerCase()).includes(playerAnswer.toLowerCase())) {
             setIsWrong(true);
             return;
         }
@@ -44,6 +46,13 @@ export function ShortAnswer({ question, answer, image, point, onComplete }: Shor
         setShowPointDialog(true);
         onComplete();
     }
+
+    useEffect(() => {
+        if(isCompletedByUser) {
+            setPlayerAnswer(answer.split('|')[0].trim().toUpperCase());
+            setIsComplete(true);
+        }
+    }, []);
 
     return (
         <div className="flex flex-col md:flex-row items-center bg-dark-slate pt-12 p-6 md:pt-6 rounded-md gap-y-8 md:gap-x-8 md:gap-y-0 relative">

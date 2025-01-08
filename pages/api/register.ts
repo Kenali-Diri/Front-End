@@ -1,8 +1,8 @@
-import { SERVER_URL } from "@/configs/app";
+import { API_URL } from "@/configs/app";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function Register(req: NextApiRequest, res: NextApiResponse) {
-    const response = await fetch(`${SERVER_URL}/Auth/Register`, {
+    const response = await fetch(`${API_URL}/Auth/Register`, {
         method: req.method,
         headers: {
             'Content-Type': 'application/json'

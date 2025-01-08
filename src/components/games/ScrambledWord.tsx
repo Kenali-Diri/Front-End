@@ -1,5 +1,7 @@
+'use client';
+
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
@@ -22,7 +24,7 @@ interface Letter {
     letter: string
 }
 
-export function ScrambledWord({ question, answer, scrambledWord, image, point, onComplete }: ScrambledWordProps) {
+export function ScrambledWord({ question, answer, scrambledWord, image, point, isCompletedByUser, onComplete }: ScrambledWordProps) {
     const scrambledWords: Array<Letter> = scrambledWord.split('').reduce<Array<Letter>>((prev, letter, index) => [
         ...prev, {
             elementID: `letter-${index}`,
@@ -78,6 +80,15 @@ export function ScrambledWord({ question, answer, scrambledWord, image, point, o
             setIsWrong(true);
         }
     }
+
+    useEffect(() => {
+        if(isCompletedByUser) {
+            setDroppedLetterElementIDs(prev => ([
+                ...answer.split('').map(letter => `letter-${scrambledWord.split('').findIndex(scrambledLetter => scrambledLetter === letter)}`)
+            ]));
+            setIsComplete(true);
+        }
+    }, []);
 
     return (
         <div className={`flex flex-col md:flex-row items-center gap-y-12 md:gap-x-12 md:gap-y-0 ${isWrong ? 'animate-shake' : ''}`} onAnimationEnd={() => setIsWrong(false)}>

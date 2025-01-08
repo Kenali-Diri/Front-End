@@ -1,8 +1,8 @@
 import slug from 'slug';
-import { SERVER_URL } from '@/configs/app';
+import { API_URL } from '@/configs/app';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const API_URL = `${SERVER_URL}/RoadmapTopic`
+const API_URL = `${API_URL}/RoadmapTopic`
 
 // API handler function
 export default async function roadmapTopicHandler(req: NextApiRequest, res: NextApiResponse) {

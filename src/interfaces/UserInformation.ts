@@ -15,7 +15,6 @@ export interface UserInformation {
         lastLevelID: number;
         lastLevelModuleID: number;
         lastMiniGameID: number;
-        lastMainGameQuizID: number;
         completeAt: string | null;
     };
 }

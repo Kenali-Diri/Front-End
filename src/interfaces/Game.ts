@@ -1,7 +1,8 @@
 export interface Game {
-    question: string,
-    answer: string,
-    image?: string,
-    point: number,
-    onComplete(): void
+    question: string;
+    answer: string;
+    image?: string;
+    point: number;
+    onComplete(): void;
+    isCompletedByUser: boolean;
 }

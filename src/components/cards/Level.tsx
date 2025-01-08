@@ -53,9 +53,9 @@ export function Level({ roadmapTopicSlug, level, variant = 'blue', complete = fa
             </div>
 
             {complete ? (
-                <div className={`relative w-fit self-end flex items-center ${backgroundColor[variant]} rounded-full gap-x-2 py-2 px-2 pe-14 text-white text-sm`}>
+                <div className={`relative w-fit self-end sm:self-center flex items-center ${backgroundColor[variant]} rounded-full gap-x-2 py-2 px-2 pe-14 text-white text-sm`}>
                     <Diamond className="fill-white" size="size-5" />
-                    <span className="font-semibold">50</span>
+                    <span className="font-semibold">{level.point}</span>
 
                     <Medal className={`absolute right-0 fill-white ${backgroundColor[variant]} rounded-full p-2.5 box-content`} size="size-6" />
                 </div>

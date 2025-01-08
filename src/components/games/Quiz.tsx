@@ -1,4 +1,6 @@
-import { useState } from "react";
+'use client';
+
+import { useEffect, useState } from "react";
 
 import Fireworks from "react-canvas-confetti/dist/presets/fireworks";
 import { TConductorInstance } from "react-canvas-confetti/dist/types";
@@ -12,7 +14,7 @@ export interface QuizProps extends Game {
     options: Array<string>
 }
 
-export function Quiz({ question, options, answer, point, onComplete }: QuizProps) {
+export function Quiz({ question, options, answer, point, isCompletedByUser,onComplete }: QuizProps) {
     const [selectedOption, setSelectedOption] = useState<string>('');
     const [isWrong, setIsWrong] = useState<boolean>(false);
 
@@ -40,6 +42,13 @@ export function Quiz({ question, options, answer, point, onComplete }: QuizProps
         setShowPointDialog(true);
         onComplete();
     }
+
+    useEffect(() => {
+        if(isCompletedByUser) {
+            setSelectedOption(answer);
+            setIsComplete(true);
+        }
+    }, []);
 
     return (
         <div className="bg-dark-slate rounded-md p-6 pb-12 flex flex-col items-center gap-y-4">

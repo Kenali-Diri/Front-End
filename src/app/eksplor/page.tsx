@@ -79,7 +79,6 @@ export default function Explore() {
             lastLevelModuleID: 1,
             lastLevelID: 1,
             lastMiniGameID: 1,
-            lastMainGameQuizID: 1,
             completeAt: null,
         },
     });
@@ -134,14 +133,16 @@ export default function Explore() {
                     cache: 'no-store', // Ensures no caching
                 });
 
-                if (response.ok) {
-                    const userInfo: UserInformation = await response.json();
-                    if (userInfo.gender === '') {
-                        userInfo.gender = 'Male';
-                    }
-
-                    setUserInfo(userInfo);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch roadmap topics');
                 }
+
+                const userInfo: UserInformation = await response.json();
+                if (userInfo.gender === '') {
+                    userInfo.gender = 'Male';
+                }
+
+                setUserInfo(userInfo);
             } catch (error) {
                 localStorage.removeItem('jwt');
                 router.replace('/');
@@ -153,14 +154,7 @@ export default function Explore() {
 
     const getCompletedLevelCountPerTopic = (levels: Array<Level>): number => {
         if (userInfo) {
-            const previousCompletedLevels = levels.filter(
-                (level) => level.id <= userInfo.userProgress.lastLevelID,
-            );
-
-            if (!userInfo.userProgress.completeAt) {
-                previousCompletedLevels.pop();
-            }
-
+            const previousCompletedLevels = levels.filter(level => level.id < userInfo.userProgress.lastLevelID);
             return previousCompletedLevels.length;
         }
 
@@ -222,7 +216,7 @@ export default function Explore() {
                                 data-aos="fade"
                                 data-aos-delay="150"
                             >
-                                Peta belajarmu
+                                Peta Belajarmu
                             </h1>
                             <p
                                 className="text-sm lg:text-base mt-2"
@@ -272,7 +266,7 @@ export default function Explore() {
                                         0/
                                         {roadmapTopics.reduce(
                                             (prev, topic) =>
-                                                prev + topic.levels.length,
+                                                prev + topic.levels.length + 1,
                                             0,
                                         )}{' '}
                                         level
@@ -349,10 +343,10 @@ export default function Explore() {
                                                 {topic.name}
                                             </h4>
                                             <p className="text-sm md:text-base mt-1">
-                                                {getCompletedLevelCountPerTopic(
-                                                    topic.levels,
+                                                {topic.levels.length > 0 && getCompletedLevelCountPerTopic(
+                                                    topic.levels
                                                 )}
-                                                /{topic.levels.length} level
+                                                /{topic.levels.length + 1} level
                                                 diselesaikan
                                             </p>
                                         </div>

@@ -144,12 +144,12 @@ export default function Login() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <Link
+                        {/* <Link
                             href="/lupa-sandi"
                             className="self-end hover:underline text-dark-slate text-xs lg:text-base font-bold"
                         >
                             Lupa kata sandi?
-                        </Link>
+                        </Link> */}
                     </div>
                     <div className="flex flex-col items-center lg:items-end gap-y-6">
                         <button

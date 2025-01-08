@@ -15,6 +15,8 @@ import { Navbar } from "@/components/Navbar";
 import { Level as ILevel } from "@/interfaces/Level";
 import { RoadmapTopic } from "@/interfaces/RoadmapTopic";
 import slug from "slug";
+import { UserInformation } from "@/interfaces/UserInformation";
+import { useRouter } from "next/navigation";
 
 interface ExploreDetailProps {
     params: {
@@ -23,13 +25,33 @@ interface ExploreDetailProps {
 }
 
 export default function ExploreDetail({ params }: ExploreDetailProps) {
+    const router = useRouter();
+
     const [roadmapTopic, setRoadmapTopic] = useState<RoadmapTopic>({
         id: 1,
         name: '',
         slug: '',
         image: '',
         levels: [],
-        bannerImage: ''
+        bannerImage: '',
+        lastMainGameQuizID: 0
+    });
+
+    const [userInfo, setUserInfo] = useState<UserInformation>({
+        email: '',
+        gender: '',
+        id: 0,
+        name: '',
+        profileImage: '',
+        score: 0,
+        badge: [],
+        userProgress: {
+            lastRoadmapTopicID: 1,
+            lastLevelModuleID: 1,
+            lastLevelID: 1,
+            lastMiniGameID: 1,
+            completeAt: null,
+        },
     });
 
     const [levels, setLevels] = useState<Array<ILevel>>([]);
@@ -55,6 +77,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 image: responseBody.data.image,
                 bannerImage: responseBody.data.bannerImage,
                 levels: responseBody.data.levels,
+                lastMainGameQuizID: responseBody.data.mainGameQuizzes.pop().id
             });
 
             setLevels([
@@ -62,21 +85,71 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                     id: level.id,
                     name: level.name,
                     slug: slug(`${level.name} ${level.id}`),
-                    subtitle: `${level.shortDescription}`
+                    subtitle: `${level.shortDescription}`,
+                    point: level.score
                 })),
                 {
                     id: 0,
                     name: 'Boss',
                     slug: `boss`,
-                    subtitle: 'Level Boss'
+                    subtitle: 'Level Boss',
+                    point: responseBody.data.score
                 }
             ]);
         }
     }
 
+    const fetchUserInformation = async () => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            try {
+                // Send JWT to API route to fetch user data
+                const response = await fetch('/api/userInformation', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    cache: 'no-store', // Ensures no caching
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch roadmap topics');
+                }
+
+                const userInfo: UserInformation = await response.json();
+                if (userInfo.gender === '') {
+                    userInfo.gender = 'Male';
+                }
+
+                setUserInfo(userInfo);
+            } catch (error) {
+                localStorage.removeItem('jwt');
+                router.replace('/');
+                
+                console.error('Error fetching user data:', error);
+            }
+        }
+    };
+
+    const getLevelCompleteStatus = (level: ILevel): boolean => {
+        if(level.name === 'Boss') {
+            if(roadmapTopic.id < userInfo.userProgress.lastRoadmapTopicID) {
+                return true;
+            }
+        } else {
+            if(level.id < userInfo.userProgress.lastLevelID) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     useEffect(() => {
         AOS.init();
         fetchData();
+        fetchUserInformation();
     }, []);
 
     return (
@@ -97,7 +170,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 <div className="col-span-12 flex flex-col items-center pb-20">
                     {levels.map((level, index) => (
                         <span className="w-full flex flex-col items-center" key={level.id}>
-                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={false} />
+                            <Level level={level} roadmapTopicSlug={params.roadmapTopicSlug} variant={index === levels.length - 1 ? 'pink' : 'blue'} type={index === levels.length - 1 ? 'boss' : 'normal'} complete={userInfo ? getLevelCompleteStatus(level) : false} />
 
                             {index < levels.length - 1 && (
                                 <div className="border-dashed border-l-2 border-dark-slate h-12" data-aos='fade-up'></div>

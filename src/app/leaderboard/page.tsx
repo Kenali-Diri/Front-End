@@ -12,6 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import Link from 'next/link';
 
 interface DecodedToken {
     [key: string]: string;
@@ -27,48 +28,44 @@ interface UserInfo {
 export default function Leaderboard() {
     const [userInfo, setUserInfo] = useState<Array<UserInfo>>([]);
     const router = useRouter();
-    const [loggedInUserId, setLoggedInUserId] = useState<number>();
+    const [loggedInUserId, setLoggedInUserId] = useState<number>(-1);
 
     const fetchData = async () => {
         const token = localStorage.getItem('jwt');
-        if (token) {
-            try {
-                const response = await fetch('/api/leaderboard', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${token}`,
-                    },
-                    cache: 'no-store', // Ensures no caching
-                });
+        try {
+            const response = await fetch('/api/leaderboard', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                cache: 'no-store', // Ensures no caching
+            });
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch roadmap topics');
-                }
+            if (!response.ok) {
+                throw new Error('Failed to fetch roadmap topics');
+            }
 
+            if(token) {
                 const decoded: DecodedToken = jwtDecode(token);
                 setLoggedInUserId(
                     Number(
                         decoded[
-                            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
                         ],
                     ),
                 );
-
-                const data = await response.json();
-                if (Array.isArray(data.data)) {
-                    setUserInfo(data.data); // Ensure the data is an array
-                } else {
-                    console.error('Invalid data format received');
-                }
-            } catch (error) {
-                router.push('/masuk');
-                console.error('Error fetching user data:', error);
             }
-        } else {
-            console.log('No authentication token found');
-            // Use router.push inside useEffect for client-side navigation
-            router.push('/masuk');
+
+            const data = await response.json();
+            if (Array.isArray(data.data)) {
+                setUserInfo(data.data); // Ensure the data is an array
+            } else {
+                console.error('Invalid data format received');
+            }
+        } catch (error) {
+            // router.push('/masuk');
+            console.error('Error fetching user data:', error);
         }
     };
 
@@ -243,28 +240,36 @@ export default function Leaderboard() {
                     data-aos-anchor-placement="top-bottom"
                 >
                     <div>
-                        <p className="text-lg md:text-xl text-dark-slate">
-                            My Points
-                        </p>
-                        {loggedInUser && (
-                            <div>
-                                <h2 className="text-5xl md:text-7xl text-blue font-bold">
-                                    {loggedInUser.score}
-                                </h2>
+                        {loggedInUser ? (
+                            <>
                                 <p className="text-lg md:text-xl text-dark-slate">
-                                    Rank #{loggedInUser.rank}
+                                    My Points
                                 </p>
+                                {loggedInUser && (
+                                    <div>
+                                        <h2 className="text-5xl md:text-7xl text-blue font-bold">
+                                            {loggedInUser.score}
+                                        </h2>
+                                        <p className="text-lg md:text-xl text-dark-slate">
+                                            Rank #{loggedInUser.rank}
+                                        </p>
+                                    </div>
+                                )}
+                            </>
+                        ) : (
+                            <div className='flex flex-col gap-y-4'>
+                                <p className='font-bold'>Gabung sekarang dan jadilah yang teratas!</p>
+                                <Link className='bg-blue w-full py-2 text-white rounded-md text-center' href='/masuk'>Gabung</Link>
                             </div>
                         )}
                     </div>
-                    <div>
-                        <Image
-                            src="/assets/exercise.png"
-                            width={150}
-                            height={50}
-                            alt="olahraga"
-                        />
-                    </div>
+                    <Image
+                        src="/assets/exercise.png"
+                        width={150}
+                        height={50}
+                        alt="olahraga"
+                        className='w-1/2 flex-none p-2'
+                    />
                 </div>
             </Section>
             <Footer />

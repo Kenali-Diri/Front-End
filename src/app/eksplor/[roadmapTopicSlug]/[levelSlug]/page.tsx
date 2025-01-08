@@ -17,6 +17,7 @@ import { ShortAnswer } from "@/components/games/ShortAnswer";
 import { ScrambledWord } from "@/components/games/ScrambledWord";
 import { Material } from "@/interfaces/Material";
 import { useRouter } from "next/navigation";
+import { UserInformation } from "@/interfaces/UserInformation";
 
 interface LevelDetailProps {
     params: {
@@ -88,6 +89,23 @@ interface MiniGameEssayDto {
 export default function LevelDetail({ params }: LevelDetailProps) {
     const router = useRouter();
 
+    const [userInfo, setUserInfo] = useState<UserInformation>({
+        email: '',
+        gender: '',
+        id: 1,
+        name: '',
+        profileImage: '',
+        score: 0,
+        badge: [],
+        userProgress: {
+            lastRoadmapTopicID: 1,
+            lastLevelModuleID: 1,
+            lastLevelID: 1,
+            lastMiniGameID: 1,
+            completeAt: null,
+        },
+    });
+
     const [level, setLevel] = useState<LevelDto>({
         id: 0,
         name: '',
@@ -107,8 +125,17 @@ export default function LevelDetail({ params }: LevelDetailProps) {
         }
     }
 
-    const handleGameCompletion = () => {
+    const handleGameCompletion = async (miniGameID: number) => {
         //TODO: Add point ke player
+        const token = localStorage.getItem('jwt');
+
+        await fetch(`/api/userProgress/lastMiniGame/${userInfo.id}?miniGameId=${miniGameID}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
     }
 
     const handleFinishLevel = () => {
@@ -134,9 +161,43 @@ export default function LevelDetail({ params }: LevelDetailProps) {
         setLevel(responseBody.data);
     }
 
+    const fetchUserInformation = async () => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            try {
+                // Send JWT to API route to fetch user data
+                const response = await fetch('/api/userInformation', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    cache: 'no-store', // Ensures no caching
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch roadmap topics');
+                }
+
+                const userInfo: UserInformation = await response.json();
+                if (userInfo.gender === '') {
+                    userInfo.gender = 'Male';
+                }
+
+                setUserInfo(userInfo);
+            } catch (error) {
+                localStorage.removeItem('jwt');
+                router.replace('/');
+                
+                console.error('Error fetching user data:', error);
+            }
+        }
+    };
+
     useEffect(() => {
         AOS.init();
         fetchData();
+        fetchUserInformation();
     }, []);
 
     return (
@@ -212,15 +273,15 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                                         } else if (material.type.startsWith('mini-game')) {
                                             if (material.type === 'mini-game-quiz') {
                                                 return (
-                                                    <Quiz question={material.miniGameQuiz.question} answer={material.miniGameQuiz.answer} point={material.miniGameQuiz.score} onComplete={handleGameCompletion} options={material.miniGameQuiz.options.map(option => option.option)} key={material.material}/>
+                                                    <Quiz question={material.miniGameQuiz.question} answer={material.miniGameQuiz.answer} point={material.miniGameQuiz.score} onComplete={() => handleGameCompletion(material.miniGameQuiz.id)} options={material.miniGameQuiz.options.map(option => option.option)} key={material.material} isCompletedByUser={material.miniGameQuiz.id < userInfo.userProgress.lastMiniGameID}/>
                                                 )
                                             } else if (material.type === 'mini-game-stack') {
                                                 return (
-                                                    <ScrambledWord question={material.miniGameStack.question} answer={material.miniGameStack.answer} image={material.miniGameStack.image ? material.miniGameStack.image : ''} point={material.miniGameStack.score} onComplete={handleGameCompletion} scrambledWord={material.miniGameStack.randomizedAnswer} key={material.material}/>
+                                                    <ScrambledWord question={material.miniGameStack.question} answer={material.miniGameStack.answer} image={material.miniGameStack.image ? material.miniGameStack.image : ''} point={material.miniGameStack.score} onComplete={() => handleGameCompletion(material.miniGameStack.id)} scrambledWord={material.miniGameStack.randomizedAnswer} key={material.material} isCompletedByUser={material.miniGameStack.id < userInfo.userProgress.lastMiniGameID}/>
                                                 )
                                             } else if (material.type === 'mini-game-essay') {
                                                 return (
-                                                    <ShortAnswer question={material.miniGameEssay.question} answer={material.miniGameEssay.answer} image={material.miniGameEssay.image ? material.miniGameEssay.image : ''} point={material.miniGameEssay.score} onComplete={handleGameCompletion} key={material.material}/>
+                                                    <ShortAnswer question={material.miniGameEssay.question} answer={material.miniGameEssay.answer} image={material.miniGameEssay.image ? material.miniGameEssay.image : ''} point={material.miniGameEssay.score} onComplete={() => handleGameCompletion(material.miniGameEssay.id)} key={material.material} isCompletedByUser={material.miniGameEssay.id < userInfo.userProgress.lastMiniGameID}/>
                                                 )
                                             }
                                         }

@@ -1,7 +1,7 @@
-import { SERVER_URL } from '@/configs/app';
+import { API_URL } from '@/configs/app';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-const API_URL = `${SERVER_URL}/Badge`;
+const API_URL = `${API_URL}/Badge`;
 
 export default async function badgeHandler(req: NextApiRequest, res: NextApiResponse){
     try {

@@ -1,4 +1,4 @@
-import { SERVER_URL } from '@/configs/app';
+import { API_URL as API_URL_CONFIG } from '@/configs/app';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 interface UserInfo {
@@ -8,7 +8,7 @@ interface UserInfo {
     score: number;
 }
 
-const API_URL = `${SERVER_URL}/Leaderboard`;
+const API_URL = `${API_URL_CONFIG}/Leaderboard`;
 
 export default async function leaderboardHandler(req: NextApiRequest, res: NextApiResponse){
     try {

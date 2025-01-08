@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -27,23 +27,22 @@ export default function Profil() {
     const [showMore, setShowMore] = useState<boolean>(false);
     const [edit, setEdit] = useState<boolean>(false);
 
-    const [userInfo, setUserInfo] = useState<UserInformation>({
-        email: '',
-        gender: '',
-        id: 1,
-        name: '',
-        profileImage: '',
-        score: 0,
-        badge: [],
-        userProgress: {
-            lastRoadmapTopicID: 1,
-            lastLevelID: 1,
-            lastLevelModuleID: 1,
-            lastMiniGameID: 1,
-            lastMainGameQuizID: 1,
-            completeAt: null,
-        },
-    });
+  const [userInfo, setUserInfo] = useState<UserInformation>({
+    email: '',
+    gender: '',
+    id: 1,
+    name: '',
+    profileImage: '',
+    score: 0,
+    badge: [],
+    userProgress: {
+      lastRoadmapTopicID: 1,
+      lastLevelID: 1,
+      lastLevelModuleID: 1,
+      lastMiniGameID: 1,
+      completeAt: null
+    }
+  });
 
     const handleBadgeClick = (alt: string, src: string, name: string) => {
         setBadgeData({ alt, src, name });
@@ -59,19 +58,55 @@ export default function Profil() {
         router.replace('/');
     };
 
-    const handleEditProfile = () => {
-        if (edit) {
-            // Fetch API edit profile
-            const payload = {
-                email: userInfo.email,
-                gender: userInfo.gender,
-            };
+  const handleEditProfile = async () => {
+    if (edit) {
+      const token = localStorage.getItem('jwt');
 
-            console.log(payload);
-        }
+      // Fetch API edit profile
+      const payload = {
+        name: userInfo.name,
+        email: userInfo.email,
+        gender: userInfo.gender,
+        password: 'default'
+      }
 
-        setEdit(!edit);
-    };
+      const response = await fetch(`/api/user/${userInfo.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const responseBody = await response.json();
+    }
+
+    setEdit(!edit);
+  }
+
+  const handleEditProfileImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    const token = localStorage.getItem('jwt');
+
+    if(files?.length === 0) {
+      return;
+    }
+
+    const payload = new FormData();
+    payload.append('ImageFile', files![0]);
+
+    const response = await fetch(`/api/user/profileImage/${userInfo.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${token}`
+      },
+      body: payload
+    });
+
+    e.target.value = '';
+  }
 
     const totalBadgesToShow = 14;
 
@@ -93,22 +128,22 @@ export default function Profil() {
                     },
                 });
 
-                if (response.ok) {
-                    const userInfo: UserInformation = await response.json();
-                    if (userInfo.gender === '') {
-                        userInfo.gender = 'Male';
-                    }
+        if (response.ok) {
+          const userInfo: UserInformation = await response.json();
+          if (userInfo.gender === '') {
+            userInfo.gender = 'Male';
+          }
 
-                    setUserInfo(userInfo);
-                }
-            } catch (error) {
-                localStorage.removeItem('jwt');
-                router.replace('/');
-
-                console.error('Error fetching user data:', error);
-            }
+          setUserInfo(userInfo);
         }
-    };
+      } catch (error) {
+        localStorage.removeItem('jwt');
+        router.replace('/');
+
+        console.error('Error fetching user data:', error);
+      }
+    }
+  };
 
     return (
         <>
@@ -147,91 +182,79 @@ export default function Profil() {
                                             </p>
                                         </div>
 
-                                        <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4">
-                                            <Image
-                                                src={
-                                                    userInfo &&
-                                                    userInfo.profileImage
-                                                        ? userInfo.profileImage
-                                                        : '/assets/hello.png'
-                                                }
-                                                width={500}
-                                                height={500}
-                                                alt="foto profil"
-                                                className="rounded-full size-24"
-                                            />
-                                            <div className="flex flex-col gap-2">
-                                                <h2 className="font-bold text-dark-slate text-2xl md:text-3xl">
-                                                    {userInfo?.name}
-                                                </h2>
-                                                <button
-                                                    className="bg-blue py-2 text-white rounded-md hover:bg-blue-hovered px-6"
-                                                    onClick={handleEditProfile}
-                                                >
-                                                    {edit
-                                                        ? 'Save Profil'
-                                                        : 'Edit Profil'}
-                                                </button>
-                                            </div>
-                                        </div>
+                    <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-4">
+                      <div className='size-24 rounded-full relative group'>
+                        <Image
+                          src={userInfo && userInfo.profileImage ? userInfo.profileImage : '/assets/hello.png'}
+                          width={500}
+                          height={500}
+                          alt="foto profil"
+                          className="rounded-full size-24"
+                        />
 
-                                        <div className="flex flex-col text-sm md:text-base md:flex-row gap-4">
-                                            <div className="flex flex-col w-full">
-                                                <p className="font-bold">
-                                                    Email
-                                                </p>
-                                                <input
-                                                    type="email"
-                                                    value={userInfo?.email}
-                                                    className={`border border-gray-300 rounded p-2 ${
-                                                        !edit
-                                                            ? 'opacity-40'
-                                                            : 'opacity-100'
-                                                    }`}
-                                                    disabled={!edit}
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLInputElement>,
-                                                    ) =>
-                                                        setUserInfo((prev) => ({
-                                                            ...prev,
-                                                            email: e.target
-                                                                .value,
-                                                        }))
-                                                    }
-                                                />
-                                            </div>
-                                            <div className="flex flex-col w-full">
-                                                <p className="font-bold">
-                                                    Gender
-                                                </p>
-                                                <select
-                                                    className={`border border-gray-300 rounded p-2 ${
-                                                        !edit
-                                                            ? 'opacity-40'
-                                                            : 'opacity-100'
-                                                    }`}
-                                                    disabled={!edit}
-                                                    value={userInfo.gender}
-                                                    onChange={(
-                                                        e: React.ChangeEvent<HTMLSelectElement>,
-                                                    ) =>
-                                                        setUserInfo((prev) => ({
-                                                            ...prev,
-                                                            gender: e.target
-                                                                .value as Gender,
-                                                        }))
-                                                    }
-                                                >
-                                                    <option value="Male">
-                                                        Laki-Laki
-                                                    </option>
-                                                    <option value="Female">
-                                                        Perempuan
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <label className='size-24 hidden group-hover:flex rounded-full absolute top-0 left-0 bg-black/50 items-center justify-center text-white font-bold z-10' htmlFor='input-profile-image'>
+                          Ganti
+                        </label>
+                        <input type="file" className='hidden' id='input-profile-image' name='input-profile-image' onChange={handleEditProfileImage} />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <h2 className="font-bold text-dark-slate text-2xl md:text-3xl">
+                          {userInfo?.name}
+                        </h2>
+                        <button
+                          className="bg-blue py-2 text-white rounded-md hover:bg-blue-hovered px-6"
+                          onClick={handleEditProfile}
+                        >
+                          {edit
+                            ? 'Save Profil'
+                            : 'Edit Profil'}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col text-sm md:text-base md:flex-row gap-4">
+                      <div className="flex flex-col w-full">
+                        <p className="font-bold">
+                          Email
+                        </p>
+                        <input
+                          type="email"
+                          value={userInfo?.email}
+                          className={`border border-gray-300 rounded p-2 ${!edit ? 'opacity-40' : 'opacity-100'}`}
+                          disabled={!edit}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setUserInfo(prev => ({
+                              ...prev,
+                              email: e.target.value
+                            }))}
+                        />
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <p className="font-bold">
+                          Gender
+                        </p>
+                        <select
+                          className={`border border-gray-300 rounded p-2 ${!edit
+                            ? 'opacity-40'
+                            : 'opacity-100'
+                            }`}
+                          disabled={!edit}
+                          value={userInfo.gender}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setUserInfo(prev => ({
+                            ...prev,
+                            gender: e.target.value as Gender
+                          }))}
+                        >
+                          <option value="Male">
+                            Laki-Laki
+                          </option>
+                          <option value="Female">
+                            Perempuan
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
 
                                     <div className="md:col-span-9">
                                         <div
@@ -243,25 +266,11 @@ export default function Profil() {
                                                 Badge
                                             </h2>
 
-                                            <div className="min-h-64 grid grid-cols-3 md:grid-cols-7 gap-2">
-                                                {userInfo.badge.map((badge) => (
-                                                    <Image
-                                                        src={badge.image}
-                                                        alt={badge.name}
-                                                        key={badge.id}
-                                                        width={800}
-                                                        height={800}
-                                                        className="w-full h-24 aspect-square object-contain drop-shadow-sm cursor-pointer"
-                                                        onClick={() =>
-                                                            handleBadgeClick(
-                                                                badge.name,
-                                                                badge.image,
-                                                                badge.name,
-                                                            )
-                                                        }
-                                                    />
-                                                ))}
-                                            </div>
+                      <div className='min-h-64 grid grid-cols-3 md:grid-cols-7 gap-2'>
+                        {userInfo.badge.map(badge => (
+                          <Image src={badge.image} alt={badge.name} key={badge.id} width={800} height={800} className='w-full h-24 aspect-square object-contain drop-shadow-sm cursor-pointer' onClick={() => handleBadgeClick(badge.name, badge.image, badge.name)} />
+                        ))}
+                      </div>
 
                                             {userInfo.badge.length >=
                                                 totalBadgesToShow && (
@@ -316,26 +325,26 @@ export default function Profil() {
                                         />
                                     </div>
 
-                                    <div
-                                        className="bg-white px-6 py-8 rounded-md flex flex-col gap-8"
-                                        data-aos="fade"
-                                        data-aos-anchor-placement="top-bottom"
-                                    >
-                                        <div>
-                                            <h2 className="text-xl lg:text-3xl text-dark-slate font-bold">
-                                                Ganti Password
-                                            </h2>
-                                            <p className="lg:text-sm text-medium-slate mt-2">
-                                                Langkah ini akan mengatur ulang
-                                                kata sandi Anda, memastikan
-                                                hanya yang baru yang akan
-                                                berfungsi.
-                                            </p>
-                                        </div>
-                                        <button className="p-2 bg-blue text-white rounded-md hover:bg-blue-hovered">
-                                            Ganti Password
-                                        </button>
-                                    </div>
+                  {/* <div
+                    className="bg-white px-6 py-8 rounded-md flex flex-col gap-8"
+                    data-aos="fade"
+                    data-aos-anchor-placement="top-bottom"
+                  >
+                    <div>
+                      <h2 className="text-xl lg:text-3xl text-dark-slate font-bold">
+                        Ganti Password
+                      </h2>
+                      <p className="lg:text-sm text-medium-slate mt-2">
+                        Langkah ini akan mengatur ulang
+                        kata sandi Anda, memastikan
+                        hanya yang baru yang akan
+                        berfungsi.
+                      </p>
+                    </div>
+                    <button className="p-2 bg-blue text-white rounded-md hover:bg-blue-hovered">
+                      Ganti Password
+                    </button>
+                  </div> */}
 
                                     <button
                                         className="text-white text-center bg-pink rounded-md p-2 md:hidden"

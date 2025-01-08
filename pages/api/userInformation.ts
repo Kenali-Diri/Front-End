@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import {jwtDecode} from 'jwt-decode';
-import { SERVER_URL } from '@/configs/app';
+import { API_URL } from '@/configs/app';
 
 interface DecodedToken {
     [key: string]: string;
@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const decoded: DecodedToken = jwtDecode(token);
             const userId = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
-            const response = await fetch(`${SERVER_URL}/User/${userId}`, {
+            const response = await fetch(`${API_URL}/User/${userId}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
