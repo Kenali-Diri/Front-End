@@ -127,7 +127,7 @@ export default function Leaderboard() {
                                         width={120}
                                         height={100}
                                         alt="second choice"
-                                        className="rounded-full"
+                                        className="rounded-full bg-white p-2 size-28"
                                     />
                                 </div>
                             </div>
@@ -163,7 +163,7 @@ export default function Leaderboard() {
                                         width={120}
                                         height={150}
                                         alt="second choice"
-                                        className="rounded-full"
+                                        className="rounded-full bg-white p-2 size-28"
                                     />
                                 </div>
                             </div>
@@ -198,7 +198,7 @@ export default function Leaderboard() {
                                             width={120}
                                             height={150}
                                             alt="second choice"
-                                            className="rounded-full"
+                                            className="rounded-full bg-white p-2 size-28"
                                         />
                                     </div>
                                 </div>
