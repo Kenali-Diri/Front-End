@@ -8,11 +8,17 @@ import { Footer } from '@/components/Footer';
 import { Section } from '@/components/core/Section';
 import { Diamond } from '@/components/icons';
 import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+interface DecodedToken {
+    [key: string]: string;
+}
+
 interface UserInfo {
+    id: number;
     rank: number;
     name: string;
     profileImage: string;
@@ -21,6 +27,7 @@ interface UserInfo {
 export default function Leaderboard() {
     const [userInfo, setUserInfo] = useState<Array<UserInfo>>([]);
     const router = useRouter();
+    const [loggedInUserId, setLoggedInUserId] = useState<number>();
 
     const fetchData = async () => {
         const token = localStorage.getItem('jwt');
@@ -28,12 +35,25 @@ export default function Leaderboard() {
             try {
                 const response = await fetch('/api/leaderboard', {
                     method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
                     cache: 'no-store', // Ensures no caching
                 });
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch roadmap topics');
                 }
+
+                const decoded: DecodedToken = jwtDecode(token);
+                setLoggedInUserId(
+                    Number(
+                        decoded[
+                            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+                        ],
+                    ),
+                );
 
                 const data = await response.json();
                 if (Array.isArray(data.data)) {
@@ -61,6 +81,8 @@ export default function Leaderboard() {
     const userRank1 = userInfo.find((user) => user.rank === 1);
     const userRank2 = userInfo.find((user) => user.rank === 2);
     const userRank3 = userInfo.find((user) => user.rank === 3);
+
+    const loggedInUser = userInfo.find((user) => user.id === loggedInUserId);
 
     return (
         <>
@@ -224,12 +246,16 @@ export default function Leaderboard() {
                         <p className="text-lg md:text-xl text-dark-slate">
                             My Points
                         </p>
-                        <h2 className="text-5xl md:text-7xl text-blue font-bold">
-                            150
-                        </h2>
-                        <p className="text-lg md:text-xl text-dark-slate">
-                            Rank #100
-                        </p>
+                        {loggedInUser && (
+                            <div>
+                                <h2 className="text-5xl md:text-7xl text-blue font-bold">
+                                    {loggedInUser.score}
+                                </h2>
+                                <p className="text-lg md:text-xl text-dark-slate">
+                                    Rank #{loggedInUser.rank}
+                                </p>
+                            </div>
+                        )}
                     </div>
                     <div>
                         <Image
