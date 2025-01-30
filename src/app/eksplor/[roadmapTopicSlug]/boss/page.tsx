@@ -35,6 +35,12 @@ interface MaingameQuizOptionDto {
     option: string;
 }
 
+interface EarnedBadgeDto {
+    id: number;
+    name: string;
+    image: string;
+}
+
 export default function BossLevel({ params }: BossProps) {
     const router = useRouter();
 
@@ -67,6 +73,11 @@ export default function BossLevel({ params }: BossProps) {
     const [selectedOption, setSelectedOption] = useState('');
 
     const [isBadgeUnlocked, setIsBadgeUnlocked] = useState(false);
+    const [earnedBadge, setEarnedBadge] = useState<EarnedBadgeDto>({
+        id: 1,
+        name: '',
+        image: ''
+    });
 
     const fetchData = async () => {
         const token = localStorage.getItem('jwt');
@@ -137,9 +148,15 @@ export default function BossLevel({ params }: BossProps) {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const responseBody = await response.json();
-            
-            setIsBadgeUnlocked(true);
+
+            if(response.ok) {
+                const responseBody = await response.json();
+
+                setIsBadgeUnlocked(true);
+                setEarnedBadge(responseBody.data);
+            } else {
+                router.push(`/eksplor/${params.roadmapTopicSlug}`);
+            }
         } else {
             // Next Question
             setCurrentQuizNumber(prev => prev + 1);
@@ -203,7 +220,7 @@ export default function BossLevel({ params }: BossProps) {
             </Section>
 
             <Fireworks onInit={initConfetti} className="pointer-events-none fixed size-full top-0 left-0 z-20"/>
-            <Dialog type="badge" open={isBadgeUnlocked} handleClose={handleCloseBoss} src={SERVER_URL + '/Images/badge-ternyata-ini-penting-ya.png'} badgeContent="Ternyata ini penting ya"/>
+            <Dialog type="badge" open={isBadgeUnlocked} handleClose={handleCloseBoss} src={earnedBadge.image} badgeContent={earnedBadge.name}/>
             <Footer />
         </>
     );

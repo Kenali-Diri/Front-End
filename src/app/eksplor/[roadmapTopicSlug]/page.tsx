@@ -133,6 +133,10 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
     };
 
     const getLevelCompleteStatus = (level: ILevel): boolean => {
+        if(userInfo.userProgress.lastMiniGameID === 37 && userInfo.userProgress.lastLevelID === 15) {
+            return true;
+        }
+
         if(level.name === 'Boss') {
             if(roadmapTopic.id < userInfo.userProgress.lastRoadmapTopicID) {
                 return true;
@@ -154,6 +158,10 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                 return true;
             }
         } else {
+            if(level.id === userInfo.userProgress.lastLevelID && userInfo.userProgress.lastMiniGameID === 37) {
+                return false;
+            }
+
             if(level.id > userInfo.userProgress.lastLevelID) {
                 return true;
             }
@@ -178,7 +186,7 @@ export default function ExploreDetail({ params }: ExploreDetailProps) {
                         <span>Kembali</span>
                     </Link>
                     <h1 className="text-4xl lg:text-6xl font-bold text-center text-white drop-shadow-lg mt-10" data-aos='fade-down'>{roadmapTopic.name}</h1>
-                    <Image width={4800} height={1600} src={roadmapTopic.bannerImage ? roadmapTopic.bannerImage : '/assets/tubuhku-banner.png'} alt="Banner" className="w-full mt-6" data-aos='fade-up' />
+                    <Image width={4800} height={1600} src={roadmapTopic.bannerImage ? roadmapTopic.bannerImage : ''} alt="Banner" className="w-full mt-6" data-aos='fade-up' />
                 </div>
             </Section>
             <Section className="bg-soft-cream rounded-tr-[50%_100%] rounded-tl-[50%_100%] h-20 md:h-36 -mt-28 md:-mt-32 lg:-mt-36"></Section>

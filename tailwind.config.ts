@@ -58,6 +58,14 @@ const config: Config = {
                         width: '100%',
                     },
                 },
+                'rotate': {
+                    '0%': {
+                        transform: 'rotate(0deg)'
+                    },
+                    '100%': {
+                        transform: 'rotate(360deg)'
+                    }
+                }
             },
             animation: {
                 shake: 'shake 0.3s ease-in-out 3',
@@ -65,6 +73,7 @@ const config: Config = {
                 'fade-out': 'fade-out 0.3s ease-in-out',
                 'fade-in-out': 'fade-in 0.3s ease-in-out 0s, fade-out 0.2s ease-in-out 2.3s forwards',
                 'loading-progress-bar': 'loading-progress-bar 2.5s linear',
+                'rotate': 'rotate 50s linear infinite'
             },
         },
     },

@@ -27,7 +27,7 @@ const Dialog = ({
     if (type === 'selesai_level' && open) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center">
-                <div className="w-[382px] h-[450px]  rounded-lg bg-white flex flex-col justify-top items-center">
+                <div className="w-[382px] h-[450px] rounded-lg bg-white flex flex-col justify-top items-center">
                     <div className="p-2 rounded-t-lg bg-gradient-to-r from-[#435BC0] to-[#F6666F] w-[100%]"></div>
 
                     <div className="flex flex-col justify-center items-center pt-6">
@@ -70,11 +70,20 @@ const Dialog = ({
     } else if (type === 'badge' && open) {
         return (
             <div
-                className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+                className="fixed inset-0 bg-black/35 backdrop-blur-sm flex justify-center items-center flex-col z-20"
                 onClick={() => handleClose()}
             >
-                <div className="bg-gradient-to-r from-[#435BC0] to-[#F6666F] rounded-md p-2">
-                    <div className="w-80 h-80 bg-white rounded-md flex flex-col justify-center items-center gap-4 p-0">
+                <div className='absolute w-full h-full animate-rotate'>
+                    <div className='w-full h-24 bg-yellow-300/20 blur-lg absolute top-1/2 -translate-y-1/2 z-0 rounded-full'></div>
+                    <div className='w-full h-24 bg-yellow-300/20 blur-lg absolute top-1/2 -translate-y-1/2 z-0 rounded-full rotate-45'></div>
+                    <div className='w-full h-24 bg-yellow-300/20 blur-lg absolute top-1/2 -translate-y-1/2 z-0 rounded-full -rotate-45'></div>
+                    <div className='w-full h-24 bg-yellow-300/20 blur-lg absolute top-1/2 -translate-y-1/2 z-0 rounded-full rotate-90'></div>
+                </div>
+
+                <h3 className='text-white font-bold text-2xl mb-6 text-center z-30'>Yeay! Kamu dapat lencana baru!</h3>
+
+                <div className="z-30 bg-gradient-to-r from-[#435BC0] to-[#F6666F] rounded-md p-2 drop-shadow-md">
+                    <div className="size-60 md:size-80 bg-white rounded-md flex flex-col justify-center items-center gap-4 p-0">
                         <Image
                             src={src || ''}
                             width={800}
@@ -90,6 +99,8 @@ const Dialog = ({
                         </div>
                     </div>
                 </div>
+
+                <p className='text-white text-center mt-4 animate-pulse z-30'>Tekan dimanapun untuk lanjut...</p>
             </div>
         );
     } else if (type === 'selesai_game' && open) {

@@ -15,9 +15,10 @@ import { ChevronDown, ChevronLeft } from "@/components/icons"
 import { Quiz } from "@/components/games/Quiz";
 import { ShortAnswer } from "@/components/games/ShortAnswer";
 import { ScrambledWord } from "@/components/games/ScrambledWord";
-import { Material } from "@/interfaces/Material";
 import { useRouter } from "next/navigation";
 import { UserInformation } from "@/interfaces/UserInformation";
+import Dialog from "@/components/Dialog";
+import { SERVER_URL } from "@/configs/app";
 
 interface LevelDetailProps {
     params: {
@@ -87,8 +88,21 @@ interface MiniGameEssayDto {
     answer: string;
 }
 
+interface EarnedBadgeDto {
+    id: number;
+    name: string;
+    image: string;
+}
+
 export default function LevelDetail({ params }: LevelDetailProps) {
     const router = useRouter();
+
+    const [isBadgeUnlocked, setIsBadgeUnlocked] = useState(false);
+    const [earnedBadge, setEarnedBadge] = useState<EarnedBadgeDto>({
+        id: 1,
+        name: '',
+        image: ''
+    });
 
     const [userInfo, setUserInfo] = useState<UserInformation>({
         email: '',
@@ -124,6 +138,12 @@ export default function LevelDetail({ params }: LevelDetailProps) {
         } else {
             setOpenedMaterial(materialToBeOpen);
         }
+
+        window.scrollTo({
+            top: 400,
+            left: 0,
+            behavior: 'smooth'
+        });
     }
 
     const handleGameCompletion = async (miniGameID: number) => {
@@ -141,7 +161,29 @@ export default function LevelDetail({ params }: LevelDetailProps) {
         await fetchUserInformation();
     }
 
-    const handleFinishLevel = () => {
+    const handleFinishLevel = async () => {
+        const token = localStorage.getItem('jwt');
+
+        const response = await fetch(`/api/userProgress/level/${userInfo.id}?levelId=${level.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if(response.ok) {
+            const responseBody = await response.json();
+
+            setIsBadgeUnlocked(true);
+            setEarnedBadge(responseBody.data);
+        } else {
+            router.push(`/eksplor/${params.roadmapTopicSlug}`);
+        }
+    }
+
+    const handleCloseBadge = () => {
+        setIsBadgeUnlocked(false);
         router.push(`/eksplor/${params.roadmapTopicSlug}`);
     }
 
@@ -221,11 +263,11 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                     )}
                 </div>
             </Section>
-            <Section className="bg-soft-cream py-20">
+            <Section className="bg-soft-cream py-20" id="module-list">
                 <div className="col-span-12 flex flex-col gap-y-8 items-center">
                     {level.modules.map(module => (
                         <div className="flex flex-col gap-y-6 p-6 md:p-8 bg-white rounded-md shadow-md leading-relaxed w-full" key={module.title} data-aos='fade-up' data-aos-anchor-placement="top-bottom">
-                            <div className="flex justify-between items-center cursor-pointer gap-x-2" onClick={() => handleOpenMaterial(module.title)}>
+                            <div className="flex justify-between items-center cursor-pointer gap-x-2" onClick={() => handleOpenMaterial(module.title)} id={`module-${module.id}`}>
                                 <h1 className="font-bold text-lg md:text-xl">{module.title}</h1>
                                 <ChevronDown className="flex-none" />
                             </div>
@@ -351,13 +393,16 @@ export default function LevelDetail({ params }: LevelDetailProps) {
                         </div>
                     ))}
 
-                    {userInfo && level.modules.length > 0 && userInfo.userProgress.lastMiniGameID > level.modules.flatMap(x => x.materials.filter(y => y.type.startsWith('mini-game'))).pop()!.miniGameID && (
+                    {userInfo && level.modules.length > 0 && (level.modules.flatMap(x => x.materials.filter(y => y.type.startsWith('mini-game'))).length > 0 ? (userInfo.userProgress.lastMiniGameID === 37 ? true : (userInfo.userProgress.lastMiniGameID > level.modules.flatMap(x => x.materials.filter(y => y.type.startsWith('mini-game'))).pop()!.miniGameID)) : true) && (
                         <button className="bg-blue hover:bg-blue-hovered text-white text-sm py-4 px-8 font-bold rounded-md mt-6" onClick={handleFinishLevel}>
                             Lanjut
                         </button>
                     )}
                 </div>
             </Section>
+
+            <Dialog type="badge" open={isBadgeUnlocked} handleClose={handleCloseBadge} src={earnedBadge.image} badgeContent={earnedBadge.name}/>
+
             <Footer />
         </>
     )
