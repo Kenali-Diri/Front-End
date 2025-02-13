@@ -5,7 +5,8 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'kenalidiriapi.azurewebsites.net',
+                hostname:
+                    'kenalidiri-c5dhgdcwf3azcjf8.southeastasia-01.azurewebsites.net',
                 port: '',
                 pathname: '/Images/**',
                 search: '',
