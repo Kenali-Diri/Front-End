@@ -11,7 +11,6 @@ import { Article, Game, Medal, Roadmap } from '@/components/icons';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import DialogGagal from '@/components/Dialog-Gagal';
 
 export default function Home() {
     useEffect(() => {
